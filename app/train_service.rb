@@ -7,21 +7,19 @@ class TrainService
     new(*args).get
   end
 
-  attr_reader :from, :to, :debug
+  attr_reader :from, :to
 
-  def initialize(from, to, date: nil, debug: false)
+  def initialize(from, to, date: nil)
     @from = from
     @to = to
     @date = date
-    @debug = debug
   end
 
   def get
     Excon.post(
       'http://tickets.amtrak.com/itd/amtrak',
       headers: headers,
-      body: URI.encode_www_form(body),
-      debug: debug
+      body: URI.encode_www_form(body)
     )
   end
 
