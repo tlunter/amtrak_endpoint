@@ -76,130 +76,130 @@ describe TrainParser do
   end
 
   describe '.parse' do
-    let(:document) {
-      File.read(File.join('spec','fixtures','html','pvd_to_bby.html'))
-    }
+    let(:document) do
+      File.read(File.join('spec', 'fixtures', 'html', 'pvd_to_bby.html'))
+    end
 
     it 'returns a list of train times' do
       expect(described_class.parse(document)).to eq([
         {
-          :number => 174,
-          :departure => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "",
-            :scheduled_time => "5:30 pm",
-            :estimated_time => "5:52 pm"
+          number: 174,
+          departure: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: '',
+            scheduled_time: '5:30 pm',
+            estimated_time: '5:52 pm'
           },
-          :arrival => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "Wed Nov 19, 2014",
-            :scheduled_time => "6:25 pm",
-            :estimated_time => "6:27 pm"
+          arrival: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: 'Wed Nov 19, 2014',
+            scheduled_time: '6:25 pm',
+            estimated_time: '6:27 pm'
           }
         },
         {
-          :number => 2164,
-          :departure => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "",
-            :scheduled_time => "5:50 pm",
-            :estimated_time => "6:45 pm"
+          number: 2164,
+          departure: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: '',
+            scheduled_time: '5:50 pm',
+            estimated_time: '6:45 pm'
           },
-          :arrival => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "Wed Nov 19, 2014",
-            :scheduled_time => "6:34 pm",
-            :estimated_time => "7:14 pm"
+          arrival: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: 'Wed Nov 19, 2014',
+            scheduled_time: '6:34 pm',
+            estimated_time: '7:14 pm'
           }
         },
         {
-          :number => 2166,
-          :departure => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "",
-            :scheduled_time => "6:54 pm",
-            :estimated_time => ""
+          number: 2166,
+          departure: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: '',
+            scheduled_time: '6:54 pm',
+            estimated_time: ''
           },
-          :arrival => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "Wed Nov 19, 2014",
-            :scheduled_time => "7:35 pm",
-            :estimated_time => "7:28 pm"
+          arrival: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: 'Wed Nov 19, 2014',
+            scheduled_time: '7:35 pm',
+            estimated_time: '7:28 pm'
           }
         },
         {
-          :number => 176,
-          :departure => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "Wed Nov 19, 2014",
-            :scheduled_time => "7:19 pm",
-            :estimated_time => "7:22 pm"
+          number: 176,
+          departure: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: 'Wed Nov 19, 2014',
+            scheduled_time: '7:19 pm',
+            estimated_time: '7:22 pm'
           },
-          :arrival => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "Wed Nov 19, 2014",
-            :scheduled_time => "8:06 pm",
-            :estimated_time => "7:51 pm"
+          arrival: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: 'Wed Nov 19, 2014',
+            scheduled_time: '8:06 pm',
+            estimated_time: '7:51 pm'
           }
         },
         {
-          :number => 2168,
-          :departure => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "Wed Nov 19, 2014",
-            :scheduled_time => "7:56 pm",
-            :estimated_time => "7:57 pm"
+          number: 2168,
+          departure: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: 'Wed Nov 19, 2014',
+            scheduled_time: '7:56 pm',
+            estimated_time: '7:57 pm'
           },
-          :arrival => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "Wed Nov 19, 2014",
-            :scheduled_time => "8:38 pm",
-            :estimated_time => "8:34 pm"
+          arrival: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: 'Wed Nov 19, 2014',
+            scheduled_time: '8:38 pm',
+            estimated_time: '8:34 pm'
           }
         },
         {
-          :number => 2170,
-          :departure => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "Wed Nov 19, 2014",
-            :scheduled_time => "8:54 pm",
-            :estimated_time => "8:55 pm"
+          number: 2170,
+          departure: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: 'Wed Nov 19, 2014',
+            scheduled_time: '8:54 pm',
+            estimated_time: '8:55 pm'
           },
-          :arrival => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "Wed Nov 19, 2014",
-            :scheduled_time => "9:34 pm",
-            :estimated_time => "9:32 pm"
+          arrival: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: 'Wed Nov 19, 2014',
+            scheduled_time: '9:34 pm',
+            estimated_time: '9:32 pm'
           }
         },
         {
-          :number => 94,
-          :departure => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "Wed Nov 19, 2014",
-            :scheduled_time => "9:16 pm",
-            :estimated_time => "9:22 pm"
+          number: 94,
+          departure: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: 'Wed Nov 19, 2014',
+            scheduled_time: '9:16 pm',
+            estimated_time: '9:22 pm'
           },
-          :arrival => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "Wed Nov 19, 2014",
-            :scheduled_time => "10:02 pm",
-            :estimated_time => "9:51 pm"
+          arrival: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: 'Wed Nov 19, 2014',
+            scheduled_time: '10:02 pm',
+            estimated_time: '9:51 pm'
           }
         },
         {
-          :number => 2172,
-          :departure => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "Wed Nov 19, 2014",
-            :scheduled_time => "9:54 pm",
-            :estimated_time => "9:55 pm"
+          number: 2172,
+          departure: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: 'Wed Nov 19, 2014',
+            scheduled_time: '9:54 pm',
+            estimated_time: '9:55 pm'
           },
-          :arrival => {
-            :scheduled_date => "Wed Nov 19, 2014",
-            :estimated_date => "Wed Nov 19, 2014",
-            :scheduled_time => "10:35 pm",
-            :estimated_time => "10:32 pm"
+          arrival: {
+            scheduled_date: 'Wed Nov 19, 2014',
+            estimated_date: 'Wed Nov 19, 2014',
+            scheduled_time: '10:35 pm',
+            estimated_time: '10:32 pm'
           }
         }
       ])

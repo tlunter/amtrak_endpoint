@@ -1,5 +1,6 @@
 require 'nokogiri'
 
+# Will take in an HTML document as a string and parse out the train schedule
 class TrainParser
   def self.parse(text)
     new(text).parse
@@ -19,7 +20,7 @@ class TrainParser
       trains << {
         number: parse_train_number(departure),
         departure: parse_train(departure),
-        arrival: parse_train(arrival),
+        arrival: parse_train(arrival)
       }
     end
 
@@ -29,33 +30,39 @@ class TrainParser
   def train_nodes
     @train_nodes ||= document.search(
       "//tr[contains(@class, 'status_result')]"
-    ).tap { |results|
-      raise "No trains found" unless results.count > 0
-    }.to_a
+    ).tap { |results| fail 'No trains found' unless results.count > 0 }.to_a
   end
 
   def parse_train_number(node)
-    find!(node, ".//th[@class='service']/div[@class='route_num']/text()").to_s.to_i
+    find!(
+      node, ".//th[@class='service']/div[@class='route_num']/text()"
+    ).to_s.to_i
   end
 
-  def parse_train(node)
-    scheduled_date = find!(node, ".//td[@class='scheduled']/div[@class='date']/text()").to_s
-    estimated_date = find!(node, ".//td[@class='act_est']/div[@class='date']/text()").to_s
-    scheduled_time = remove_parentheses(find!(node, ".//td[@class='scheduled']/div[@class='time']/text()").to_s)
-    estimated_time = remove_parentheses(find!(node, ".//td[@class='act_est']/div[@class='time']/text()").to_s)
+  def parse_train(node) # rubocop:disable Metrics/MethodLength
+    scheduled_date = find!(
+      node, ".//td[@class='scheduled']/div[@class='date']/text()"
+    ).to_s
+    estimated_date = find!(
+      node, ".//td[@class='act_est']/div[@class='date']/text()"
+    ).to_s
+    scheduled_time = remove_parentheses(
+      find!(node, ".//td[@class='scheduled']/div[@class='time']/text()").to_s
+    )
+    estimated_time = remove_parentheses(
+      find!(node, ".//td[@class='act_est']/div[@class='time']/text()").to_s
+    )
 
     {
       scheduled_date: scheduled_date,
       estimated_date: estimated_date,
       scheduled_time: scheduled_time,
-      estimated_time: estimated_time,
+      estimated_time: estimated_time
     }
   end
 
   def find!(node, xpath)
-    node.search(xpath).tap { |rs|
-      raise "#{rs.count} results found" if rs.count > 1
-    }
+    node.search(xpath).tap { |rs| fail "#{rs.count} results" if rs.count > 1 }
   end
 
   def make_datetime(date, time)
