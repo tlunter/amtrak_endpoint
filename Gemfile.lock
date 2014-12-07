@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    amtrak (0.0.1)
+    amtrak (1.0.0)
       excon (~> 0.41.0)
       nokogiri (~> 1.6.4)
     coderay (1.1.0)
@@ -28,6 +28,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  amtrak
+  amtrak (~> 1.0.0)
   pry
   sinatra
