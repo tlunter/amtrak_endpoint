@@ -1,0 +1,14 @@
+[Unit]
+Description=Amtrak Endpoint
+After=syslog.target
+
+[Service]
+User=tlunter
+WorkingDirectory=/opt/tlunter/amtrak_endpoint
+Environment=RACK_ENV=production
+ExecStart=/bin/bash -lc "bundle exec unicorn -l unix:///tmp/amtrak_endpoint.sock"
+Restart=always
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
