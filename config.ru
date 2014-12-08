@@ -1,7 +1,12 @@
 require 'pry'
 require 'sinatra'
+require 'oboe'
 require 'amtrak'
 require 'json'
+
+if ENV['RACK_ENV'] == 'production'
+  Oboe::Config[:tracing_mode] = 'through'
+end
 
 class AmtrakEndpoint < Sinatra::Base
   get %r{^/(?<from>[^/.]*)/(?<to>[^/.]*).json} do
