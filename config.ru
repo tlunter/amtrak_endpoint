@@ -13,11 +13,10 @@ class AmtrakEndpoint < Sinatra::Base
 
   set :cache, Dalli::Client.new
 
-  def pretty_string(from, to, date, minute)
+  def pretty_string(from, to, date)
     str =  "#{from}"
     str << ":#{to}"
     str << ":#{date.iso8601}" if date
-    str << ":#{minute}"
   end
 
   get %r{^/(?<from>[^/.]*)/(?<to>[^/.]*).json} do
@@ -26,8 +25,7 @@ class AmtrakEndpoint < Sinatra::Base
     from = params["from"]
     to = params["to"]
     date = Date.parse(params["date"]) if params["date"]
-    minute = (Time.now.to_i / 60)
-    key = pretty_string(from, to, date, minute)
+    key = pretty_string(from, to, date)
     settings.cache.fetch(key, KEY_EXPIRE_TIME) do
       Amtrak.get(from, to, date: date).to_json
     end
