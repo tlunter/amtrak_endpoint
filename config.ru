@@ -28,7 +28,7 @@ class AmtrakEndpoint < Sinatra::Base
     date = Date.parse(params["date"]) if params["date"]
     minute = (Time.now.to_i / 60)
     key = pretty_string(from, to, date, minute)
-    settings.cache.fetch(key, expires_in: KEY_EXPIRE_TIME) do
+    settings.cache.fetch(key, KEY_EXPIRE_TIME) do
       Amtrak.get(from, to, date: date).to_json
     end
   end
