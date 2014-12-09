@@ -5,6 +5,7 @@ GEM
       excon (~> 0.41.0)
       nokogiri (~> 1.6.4)
     coderay (1.1.0)
+    dalli (2.7.2)
     excon (0.41.0)
     json (1.8.1)
     kgio (2.9.2)
@@ -38,6 +39,7 @@ PLATFORMS
 
 DEPENDENCIES
   amtrak (~> 1.0.0)
+  dalli
   oboe
   pry
   sinatra
