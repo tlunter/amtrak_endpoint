@@ -49,6 +49,7 @@ class AmtrakEndpoint < Sinatra::Application
   end
 
   get %r{^/} do
+    erb :index
   end
 end
 
