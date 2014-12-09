@@ -9,6 +9,8 @@ if ENV['RACK_ENV'] == 'production'
 end
 
 class AmtrakEndpoint < Sinatra::Base
+  KEY_EXPIRE_TIME = 60
+
   set :cache, Dalli::Client.new
 
   def pretty_string(from, to, date, minute)
@@ -25,7 +27,8 @@ class AmtrakEndpoint < Sinatra::Base
     to = params["to"]
     date = Date.parse(params["date"]) if params["date"]
     minute = (Time.now.to_i / 60)
-    settings.cache.fetch(pretty_string(from, to, date, minute)) do
+    key = pretty_string(from, to, date, minute)
+    settings.cache.fetch(key, expires_in: KEY_EXPIRE_TIME) do
       Amtrak.get(from, to, date: date).to_json
     end
   end
