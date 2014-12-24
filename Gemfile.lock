@@ -23,6 +23,8 @@ GEM
     rack-protection (1.5.3)
       rack
     raindrops (0.13.0)
+    shotgun (0.9)
+      rack (>= 1.0)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -42,5 +44,6 @@ DEPENDENCIES
   dalli
   oboe
   pry
+  shotgun
   sinatra
   unicorn
