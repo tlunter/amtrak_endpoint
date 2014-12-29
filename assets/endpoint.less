@@ -1,0 +1,38 @@
+#endpointgem {
+  color: #fff;
+  background-color: #1375b3;
+  text-shadow: 0 1px #2a2a2a;
+
+  .half {
+    display: inline-block;
+
+    width: 48%;
+    min-width: 300px;
+
+    margin: 10px 5px;
+
+    @media (max-width: @maxWidth) {
+      margin: 10px 0;
+
+      width: 100%;
+      min-width: initial;
+    }
+  }
+
+  .well {
+    background-color: #096098;
+  }
+
+  .feature {
+    width: 100%;
+    min-width: initial;
+
+    margin: 0;
+
+    table {
+      th, td {
+        padding: 0 15px;
+      }
+    }
+  }
+}
