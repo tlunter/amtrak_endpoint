@@ -4,8 +4,8 @@ var concat = require('gulp-concat');
 
 gulp.task('less', function() {
   gulp.src('assets/**/*.less')
-    .pipe(less())
     .pipe(concat('style.css'))
+    .pipe(less())
     .pipe(gulp.dest('./public/'));
 });
 
