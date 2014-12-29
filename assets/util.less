@@ -4,8 +4,20 @@
 
 .left {
   float: left;
+
+  @media (max-width: @maxWidth) {
+    float: none;
+
+    text-align: center;
+  }
 }
 
 .right {
   float: right;
+
+  @media (max-width: @maxWidth) {
+    float: none;
+
+    text-align: center;
+  }
 }

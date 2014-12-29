@@ -1,3 +1,19 @@
 #osx {
   background-color: #e0e0e0;
+
+  .well {
+    background-color: #e5e5e5;
+  }
+
+  .feature {
+    width: 30%;
+    min-width: 300px;
+
+    @media (max-width: @maxWidth) {
+      margin: 10px 0;
+
+      width: 100%;
+      min-width: initial;
+    }
+  }
 }
