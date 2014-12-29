@@ -3,6 +3,7 @@
     <title>Amtrak Status</title>
     <link rel="stylesheet" href="style.css" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans:400' rel='stylesheet' type='text/css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
     <div class="page" id="header">
@@ -43,16 +44,24 @@
           <div class="copy">
             Changing icon colors give you a quick glance perspective of how long you'll have to wait.
             <table>
-              <tr>
-                <td>Yellow:</td><td>15 minutes late</td>
-              </tr>
-              <tr>
-                <td>Orange:</td><td>45 minutes late</td>
-              </tr>
-              <tr>
-                <td>Red:</td><td>hour and a half</td>
-              </tr>
+              <thead>
+                <tr>
+                  <th>Color</th><th>At least this late</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Yellow</td><td>15 minutes late</td>
+                </tr>
+                <tr>
+                  <td>Orange</td><td>45 minutes late</td>
+                </tr>
+                <tr>
+                  <td>Red</td><td>hour and a half</td>
+                </tr>
+              </tbody>
             </table>
+            Also, try enabling to show the train time in the system bar for quicker awareness.
           </div>
         </div>
         <div class="feature well">
@@ -70,14 +79,49 @@
         </div>
       </div>
     </div>
-    <div class="page" id="endpoint">
-      <div class="container">
-        <h1>Endpoint</h1>
-        <ul>
-          <li>
-            <pre>https://amtrak-endpoint.tlunter.com/FROM/TO?date=DATE</pre>
-          </li>
-        </ul>
+    <div class="page" id="endpointgem">
+      <div class="container textcenter">
+        <div class="half textcenter">
+          <h1>Endpoint</h1>
+          <div class="feature well">
+            <img src="http://tlunter-amtrak.s3.amazonaws.com/imgs/endpoint/json.png" class="screenshot">
+            <div class="copy">
+              Looking for the raw data, accessible as a JSON endpoint?
+              Here it is!
+              <pre>https://amtrak.tlunter.com/FROM/TO.json</pre>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Parameter</th><th>Required</th><th>Location</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>FROM/TO</td>
+                  <td>Yes</td>
+                  <td>Path</td>
+                </tr>
+                <tr>
+                  <td>DATE</td>
+                  <td>No</td>
+                  <td>Query parameter</td>
+                </tr>
+                </tbody>
+              </table>
+              Example stations: PVD, BOS, BBY, Providence, RI (PVD), Boston - South Station, MA (BOS), Boston - Back Bay, MA (BBY)
+            </div>
+          </div>
+        </div>
+        <div class="half textcenter">
+          <h1>Gem</h1>
+          <div class="feature well">
+            <img src="http://tlunter-amtrak.s3.amazonaws.com/imgs/gem/hash.png" class="screenshot">
+            <div class="copy">
+              Simple interface follows the same as the endpoint.  Two required parameters, and an optional date.
+              <pre>Amtrak.get('FROM', 'TO', date: 'DATE')</pre>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="page" id="footer">
