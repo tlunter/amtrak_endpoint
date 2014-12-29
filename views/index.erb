@@ -97,12 +97,12 @@
                 </thead>
                 <tbody>
                 <tr>
-                  <td>FROM/TO</td>
+                  <td>from/to</td>
                   <td>Yes</td>
                   <td>Path</td>
                 </tr>
                 <tr>
-                  <td>DATE</td>
+                  <td>date</td>
                   <td>No</td>
                   <td>Query parameter</td>
                 </tr>
@@ -118,7 +118,7 @@
             <img src="http://tlunter-amtrak.s3.amazonaws.com/imgs/gem/hash.png" class="screenshot">
             <div class="copy">
               Simple interface follows the same as the endpoint.  Two required parameters, and an optional date.
-              <pre>Amtrak.get('FROM', 'TO', date: 'DATE')</pre>
+              <pre>Amtrak.get(String, String, date: Date)</pre>
             </div>
           </div>
         </div>
@@ -127,9 +127,14 @@
     <div class="page" id="footer">
       <div class="container">
         <footer>
-          <a class="source" href="https://github.com/tlunter/amtrak_mac">OS X Source</a>
-          <a class="source" href="https://github.com/tlunter/amtrak_endpoint">Endpoint Source</a>
-          <a class="source" href="https://github.com/tlunter/amtrak_gem">Gem Source</a>
+          <p>
+            <a class="source" href="https://github.com/tlunter/amtrak_mac">OS X Source</a>
+            <a class="source" href="https://github.com/tlunter/amtrak_endpoint">Endpoint Source</a>
+            <a class="source" href="https://github.com/tlunter/amtrak_gem">Gem Source</a>
+          </p>
+          <p>
+            By Todd Lunter  <a href="https://github.com/tlunter">GitHub</a> <a href="https://twitter.com/tlunter">Twitter</a>
+          </p>
         </footer>
       </div>
     </div>
