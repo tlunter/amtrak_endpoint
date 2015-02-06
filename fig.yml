@@ -1,0 +1,16 @@
+memcached:
+  image: memcached
+  hostname: amtrak_memcached
+tracelyzer:
+  image: tracelyzer
+  hostname: amtrak_tracelyzer
+amtrakendpoint:
+  image: amtrak_endpoint
+  links:
+    - memcached
+    - tracelyzer
+  volumes_from:
+    - tracelyzer
+  ports:
+    - "3000:3000"
+  hostname: amtrak_endpoint
