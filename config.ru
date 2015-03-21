@@ -5,27 +5,26 @@ require 'amtrak'
 require 'json'
 require 'logger'
 
-if ENV['DOCKER']
-  tracelyzer_host = 'tracelyzer'
-  memcached_host = 'memcached'
-else
-  tracelyzer_host = 'localhost'
-  memcached_host = 'localhost'
-end
-
-if ENV['RACK_ENV'] == 'production'
-  Oboe::Config[:reporter_host] = tracelyzer_host
-  Oboe::Config[:tracing_mode] = 'always'
-  Oboe::Config[:verbose] = true
-  Oboe::Reporter.start
-  Oboe::API.report_init('ruby')
-end
-
 class AmtrakEndpoint < Sinatra::Application
   KEY_EXPIRE_TIME = 60
 
-  set :cache, Dalli::Client.new("#{memcached_host}:11211")
+  if ENV['DOCKER']
+    set :hosts, { :tracelyzer => 'tracelyzer', :memcached => 'memcached' }
+  else
+    set :hosts, { :tracelyzer => 'localhost', :memcached => '127.0.0.1' }
+  end
+  set :cache, Dalli::Client.new("#{settings.hosts[:memcached]}:11211")
   set :logger, Logger.new(STDOUT)
+
+  configure do
+    if ENV['RACK_ENV'] == 'production'
+      Oboe::Config[:reporter_host] = settings.hosts[:tracelyzer]
+      Oboe::Config[:tracing_mode] = 'always'
+      Oboe::Config[:verbose] = true
+      Oboe::Reporter.start
+      Oboe::API.report_init('ruby')
+    end
+  end
 
   def pretty_string(from, to, date)
     str =  "#{from}"
