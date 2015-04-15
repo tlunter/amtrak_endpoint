@@ -4,6 +4,11 @@ require 'oboe'
 require 'amtrak'
 require 'json'
 require 'logger'
+require 'rollbar/middleware/sinatra'
+
+Rollbar.configure do |config|
+  config.access_token = ''
+end
 
 class AmtrakEndpoint < Sinatra::Application
   KEY_EXPIRE_TIME = 60
@@ -15,6 +20,10 @@ class AmtrakEndpoint < Sinatra::Application
   end
   set :cache, Dalli::Client.new("#{settings.hosts[:memcached]}:11211")
   set :logger, Logger.new(STDOUT)
+
+  if ENV['RACK_ENV'] == 'production'
+    use Rollbar::Middleware::Sinatra
+  end
 
   configure do
     if ENV['RACK_ENV'] == 'production'
