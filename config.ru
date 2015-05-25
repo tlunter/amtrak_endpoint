@@ -42,16 +42,24 @@ class AmtrakEndpoint < Sinatra::Application
     str
   end
 
+  def get_train_data(from, to, date)
+    train_fetcher = Amtrak::TrainFetcher.new(from, to, date: date)
+    fail 'New Release!' unless train_fetcher.check_release
+    train_fetcher.get.map do |html|
+      Amtrak::TrainParser.parse(html)
+    end.flatten
+  end
+
   def amtrak_data(from, to, date)
     report = { from: from, to: to, date: date }
     if Oboe.tracing?
       settings.logger.debug('Tracing amtrak data')
       Oboe::API.trace('amtrak', report) do
-        Amtrak.get(from, to, date: date)
+        get_train_data(from, to, date)
       end
     else
       settings.logger.debug('Not tracing amtrak data')
-      Amtrak.get(from, to, date: date)
+      get_train_data(from, to, date)
     end
   end
 

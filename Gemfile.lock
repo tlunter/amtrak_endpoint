@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    amtrak (1.1.0)
+    amtrak (1.2.0)
       excon (~> 0.41.0)
       nokogiri (~> 1.6.4)
     coderay (1.1.0)
@@ -43,7 +43,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  amtrak (~> 1.1)
+  amtrak (~> 1.2)
   dalli
   oboe
   pry
