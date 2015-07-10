@@ -24,5 +24,6 @@ nginx:
     - "./nginx:/opt/nginx/config"
   volumes_from:
     - tracelyzer
+    - endpoint
   ports:
     - "8080:8080"
