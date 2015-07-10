@@ -25,10 +25,9 @@ RUN /bin/sh -c "wget -qO- https://apt.appneta.com/appneta-apt-key.pub | apt-key 
 RUN apt-get -y update
 RUN apt-get -y install liboboe0 liboboe-dev
 
-
 WORKDIR /
 ADD . /opt/tlunter/amtrak_endpoint
-run groupadd --gid 1000 amtrak
+RUN groupadd --gid 1000 amtrak
 RUN useradd --uid 1000 --gid 1000 --create-home amtrak
 RUN chown -R amtrak:amtrak /opt/tlunter/
 
@@ -38,8 +37,11 @@ USER amtrak
 RUN bundle config --global jobs 8
 RUN bundle install --deployment
 
+COPY nginx.conf /opt/nginx/config/amtrak/nginx.conf
+
 CMD bundle exec unicorn -l 3000
 ENV DOCKER true
 ENV RACK_ENV production
 EXPOSE 3000
 VOLUME /opt/tlunter/amtrak_endpoint/public
+VOLUME /opt/nginx/conf/amtrak
