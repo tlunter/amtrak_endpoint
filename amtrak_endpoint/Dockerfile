@@ -44,4 +44,4 @@ ENV DOCKER true
 ENV RACK_ENV production
 EXPOSE 3000
 VOLUME /opt/tlunter/amtrak_endpoint/public
-VOLUME /opt/nginx/conf/amtrak
+VOLUME /opt/nginx/config/amtrak
