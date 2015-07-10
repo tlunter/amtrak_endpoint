@@ -42,3 +42,4 @@ CMD bundle exec unicorn -l 3000
 ENV DOCKER true
 ENV RACK_ENV production
 EXPOSE 3000
+VOLUME /opt/tlunter/amtrak_endpoint/public
