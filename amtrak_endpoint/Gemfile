@@ -7,7 +7,7 @@ gem 'gcm'
 gem 'shotgun'
 gem 'sinatra'
 gem 'unicorn'
-gem 'dalli'
+gem 'redis'
 gem 'oboe'
 gem 'rollbar', '~> 1.5.0'
 

@@ -1,0 +1,28 @@
+redis:
+  image: amtrak_redis
+  hostname: amtrak_redis
+  volumes:
+    - "./redis:/data"
+tracelyzer:
+  image: tracelyzer
+  hostname: amtrak_tracelyzer
+endpoint:
+  image: amtrak_endpoint
+  hostname: amtrak_endpoint
+  links:
+    - redis
+    - tracelyzer
+  volumes_from:
+    - tracelyzer
+nginx:
+  image: nginx-oboe
+  hostname: amtrak_nginx
+  links:
+    - tracelyzer
+    - endpoint
+  volumes:
+    - "./nginx:/opt/nginx/config"
+  volumes_from:
+    - tracelyzer
+  ports:
+    - "8080:8080"

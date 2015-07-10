@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'dalli'
+require 'redis'
 require 'oboe'
 require 'amtrak'
 require 'json'
@@ -14,11 +14,11 @@ class AmtrakEndpoint < Sinatra::Application
   KEY_EXPIRE_TIME = 60
 
   if ENV['DOCKER']
-    set :hosts, { :tracelyzer => 'tracelyzer', :memcached => 'memcached' }
+    set :hosts, { :tracelyzer => 'tracelyzer', :redis => 'redis' }
   else
-    set :hosts, { :tracelyzer => 'localhost', :memcached => '127.0.0.1' }
+    set :hosts, { :tracelyzer => 'localhost', :redis => '127.0.0.1' }
   end
-  set :cache, Dalli::Client.new("#{settings.hosts[:memcached]}:11211")
+  set :cache, Redis.new(host: "#{settings.hosts[:redis]}", port: 6379)
   set :logger, Logger.new(STDOUT)
 
   if ENV['RACK_ENV'] == 'production'
@@ -70,10 +70,14 @@ class AmtrakEndpoint < Sinatra::Application
     to = params["to"]
     date = Date.parse(params["date"]) if params["date"]
     key = pretty_string(from, to, date)
-    settings.cache.fetch(key, KEY_EXPIRE_TIME) do
+    unless timings = settings.cache.get(key)
+      settings.logger.debug("Getting new data for: #{key}")
+      timings = amtrak_data(from, to, date).to_json
       settings.logger.debug("Caching new data for: #{key}")
-      amtrak_data(from, to, date).to_json
+      settings.cache.set(key, timings, ex: KEY_EXPIRE_TIME)
     end
+
+    timings
   end
 
   get %r{^/} do

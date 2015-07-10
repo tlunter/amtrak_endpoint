@@ -5,7 +5,6 @@ GEM
       excon (~> 0.41.0)
       nokogiri (~> 1.6.4)
     coderay (1.1.0)
-    dalli (2.7.2)
     excon (0.41.0)
     gcm (0.1.0)
       httparty
@@ -31,6 +30,7 @@ GEM
     rack-protection (1.5.3)
       rack
     raindrops (0.13.0)
+    redis (3.2.1)
     rollbar (1.5.0)
       multi_json (~> 1.3)
     shotgun (0.9)
@@ -51,10 +51,10 @@ PLATFORMS
 
 DEPENDENCIES
   amtrak (~> 1.2)
-  dalli
   gcm
   oboe
   pry
+  redis
   rollbar (~> 1.5.0)
   shotgun
   sinatra
