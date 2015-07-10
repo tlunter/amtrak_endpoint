@@ -7,11 +7,18 @@ GEM
     coderay (1.1.0)
     dalli (2.7.2)
     excon (0.41.0)
+    gcm (0.1.0)
+      httparty
+      json
+    httparty (0.13.5)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     json (1.8.2)
     kgio (2.9.2)
     method_source (0.8.2)
     mini_portile (0.6.2)
     multi_json (1.11.0)
+    multi_xml (0.5.5)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     oboe (2.7.13.3)
@@ -45,9 +52,13 @@ PLATFORMS
 DEPENDENCIES
   amtrak (~> 1.2)
   dalli
+  gcm
   oboe
   pry
   rollbar (~> 1.5.0)
   shotgun
   sinatra
   unicorn
+
+BUNDLED WITH
+   1.10.5
