@@ -1,9 +1,9 @@
 if ENV['RACK_ENV'] == 'production'
-  Oboe::Config[:reporter_host] = ENV['DOCKER'] ? 'tracelyzer' : 'localhost'
-  Oboe::Config[:tracing_mode] = 'always'
-  Oboe::Config[:verbose] = true
-  Oboe::Reporter.start
-  Oboe::API.report_init('ruby')
+  TraceView::Config[:reporter_host] = ENV['DOCKER'] ? 'tracelyzer' : 'localhost'
+  TraceView::Config[:tracing_mode] = 'always'
+  TraceView::Config[:verbose] = true
+  TraceView::Reporter.start
+  TraceView::API.report_init('ruby')
 
   Rollbar.configure do |config|
     config.access_token = ENV['ROLLBAR_TOKEN']

@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'redis'
-require 'oboe'
+require 'traceview'
 require 'amtrak'
 require 'json'
 require 'logger'

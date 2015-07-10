@@ -22,9 +22,9 @@ module AmtrakEndpoint
 
     def amtrak_data(from, to, date)
       report = { from: from, to: to, date: date }
-      if Oboe.tracing?
+      if TraceView.tracing?
         settings.logger.debug('Tracing amtrak data')
-        Oboe::API.trace('amtrak', report) do
+        TraceView::API.trace('amtrak', report) do
           get_train_data(from, to, date)
         end
       else
