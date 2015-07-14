@@ -11,10 +11,12 @@ require 'amtrak_endpoint/initializers'
 require 'amtrak_endpoint/cache'
 require 'amtrak_endpoint/base'
 require 'amtrak_endpoint/get_times'
+require 'amtrak_endpoint/register_device'
 
 module AmtrakEndpoint
   class App < Sinatra::Application
     use AmtrakEndpoint::GetTimes
+    use AmtrakEndpoint::RegisterDevice
   end
 
   module_function
