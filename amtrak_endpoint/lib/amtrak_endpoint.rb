@@ -9,10 +9,17 @@ require 'rollbar/middleware/sinatra'
 require 'amtrak_endpoint/initializers'
 
 require 'amtrak_endpoint/cache'
+require 'amtrak_endpoint/base'
 require 'amtrak_endpoint/get_times'
 
 module AmtrakEndpoint
   class App < Sinatra::Application
     use AmtrakEndpoint::GetTimes
+  end
+
+  module_function
+
+  def logger
+    @logger ||= Logger.new(STDOUT)
   end
 end

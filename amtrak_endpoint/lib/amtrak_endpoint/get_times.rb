@@ -1,9 +1,6 @@
 module AmtrakEndpoint
-  class GetTimes < Sinatra::Application
+  class GetTimes < Base
     KEY_EXPIRE_TIME = 60
-
-    set :cache, AmtrakEndpoint::Cache.redis
-    set :logger, Logger.new(STDOUT)
 
     def pretty_string(from, to, date)
       str =  "#{from}"
@@ -12,28 +9,20 @@ module AmtrakEndpoint
       str
     end
 
-    def get_train_data(from, to, date)
-      train_fetcher = Amtrak::TrainFetcher.new(from, to, date: date)
-      fail 'New Release!' unless train_fetcher.check_release
-      train_fetcher.get.map do |html|
-        Amtrak::TrainParser.parse(html)
-      end.flatten
-    end
-
     def amtrak_data(from, to, date)
       report = { from: from, to: to, date: date }
       if TraceView.tracing?
-        settings.logger.debug('Tracing amtrak data')
+        AmtrakEndpoint.logger.debug('Tracing amtrak data')
         TraceView::API.trace('amtrak', report) do
-          get_train_data(from, to, date)
+          Amtrak.get(from, to, date: date)
         end
       else
-        settings.logger.debug('Not tracing amtrak data')
-        get_train_data(from, to, date)
+        AmtrakEndpoint.logger.debug('Not tracing amtrak data')
+        Amtrak.get(from, to, date: date)
       end
     end
 
-    get %r{^/(?<from>[^/.]*)/(?<to>[^/.]*).json} do
+    get %r{^/(?<from>[^/.]*)/(?<to>[^/.]*)\.json} do
       headers['Content-Type'] = 'application/json'
 
       from = params["from"]
@@ -41,14 +30,9 @@ module AmtrakEndpoint
       date = Date.parse(params["date"]) if params["date"]
       key = pretty_string(from, to, date)
 
-      unless timings = settings.cache.get(key)
-        settings.logger.debug("Getting new data for: #{key}")
-        timings = amtrak_data(from, to, date).to_json
-        settings.logger.debug("Caching new data for: #{key}")
-        settings.cache.set(key, timings, ex: KEY_EXPIRE_TIME)
+      AmtrakEndpoint::Cache.find_or_create(key, expiration: KEY_EXPIRE_TIME) do
+        amtrak_data(from, to, date).to_json
       end
-
-      timings
     end
   end
 end
