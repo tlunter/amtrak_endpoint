@@ -7,10 +7,9 @@ module AmtrakEndpoint
       train_routes = JSON.parse(request.body.tap(&:rewind).read)
 
       train_routes.each do |train_route|
-        key = [train_route["from"], train_route["to"]].join(':')
-        AmtrakEndpoint::Cache.redis.sadd(
-          "train_route:#{key}", device_id
-        )
+        AmtrakEndpoint::TrainRoute.new(
+          from: train_route["from"], to: train_route["to"]
+        ).devices << device_id
       end
       ""
     end
