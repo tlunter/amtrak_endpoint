@@ -19,7 +19,7 @@ module AmtrakEndpoint
     end
 
     def host
-      ENV['DOCKER'] ? 'redis' : 'localhost'
+      REDIS_HOST
     end
   end
 end

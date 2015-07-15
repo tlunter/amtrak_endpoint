@@ -11,3 +11,5 @@ if ENV['RACK_ENV'] == 'production'
 
   ::Sinatra::Base.use Rollbar::Middleware::Sinatra
 end
+
+REDIS_HOST = ENV['DOCKER'] ? 'redis' : 'localhost'
