@@ -15,7 +15,7 @@ endpoint:
   volumes_from:
     - tracelyzer
 nginx:
-  image: nginx-oboe
+  image: nginx_oboe
   hostname: amtrak_nginx
   links:
     - tracelyzer
