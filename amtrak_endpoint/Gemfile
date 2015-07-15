@@ -1,3 +1,4 @@
+$LOAD_PATH << File.join(Dir.pwd, 'lib')
 $LOAD_PATH << Dir.pwd
 
 source 'https://rubygems.org'
