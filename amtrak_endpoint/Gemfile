@@ -13,6 +13,9 @@ gem 'traceview'
 gem 'rollbar', '~> 1.5.0'
 gem 'redis-objects'
 gem 'connection_pool'
+gem 'resque'
+gem 'rake'
+gem 'clockwork'
 
 group :development do
   gem 'pry'
