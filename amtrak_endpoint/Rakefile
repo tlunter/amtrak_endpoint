@@ -1,0 +1,26 @@
+require 'rake'
+
+task :environment do
+  require 'amtrak_endpoint'
+end
+
+desc 'Run the web server'
+task unicorn: :environment do
+  unicorn_conf = { config_file: 'unicorn.rb' }
+  app = Unicorn.builder('config.ru', unicorn_conf)
+  Unicorn::HttpServer.new(app, unicorn_conf).start.join
+end
+
+desc 'Run the Clockwork worker'
+task clockwork: :environment do
+  require './config/clock.rb'
+  Clockwork.run
+end
+
+desc 'Run the Resque queue worker'
+task resque: :environment do
+  Resque.redis = Redis.new(host: REDIS_HOST)
+  Resque.logger.formatter = Resque::VeryVerboseFormatter.new
+  # Queue to work and 1.0 interval when checking queue
+  Resque::Worker.new('amtrak').work(1.0)
+end
