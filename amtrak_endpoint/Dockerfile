@@ -25,21 +25,28 @@ RUN /bin/sh -c "wget -qO- https://apt.appneta.com/appneta-apt-key.pub | apt-key 
 RUN apt-get -y update
 RUN apt-get -y install liboboe0 liboboe-dev
 
-WORKDIR /
-ADD . /opt/tlunter/amtrak_endpoint
 RUN groupadd --gid 1000 amtrak
 RUN useradd --uid 1000 --gid 1000 --create-home amtrak
+
+USER amtrak
+ADD Gemfile /tmp/Gemfile
+ADD Gemfile.lock /tmp/Gemfile.lock
+RUN bundle config --global jobs 8
+RUN bundle install --path ~/.gems
+
+WORKDIR /
+USER root
+ADD . /opt/tlunter/amtrak_endpoint
 RUN chown -R amtrak:amtrak /opt/tlunter/
 
 # Install ruby dependencies
 WORKDIR /opt/tlunter/amtrak_endpoint
 USER amtrak
-RUN bundle config --global jobs 8
-RUN bundle install --deployment
+RUN bundle install --path ~/.gems
 
 COPY nginx.conf /opt/nginx/config/amtrak/nginx.conf
 
-CMD bundle exec unicorn -l 3000
+ENTRYPOINT ["bundle", "exec", "rake"]
 ENV DOCKER true
 ENV RACK_ENV production
 ENV ENVIRONMENT production
