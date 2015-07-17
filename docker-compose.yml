@@ -6,7 +6,7 @@ redis:
 tracelyzer:
   image: tracelyzer
   hostname: amtrak_tracelyzer
-endpoint:
+web:
   image: amtrak_endpoint
   hostname: amtrak_endpoint
   links:
@@ -14,16 +14,17 @@ endpoint:
     - tracelyzer
   volumes_from:
     - tracelyzer
+  command: unicorn
 nginx:
   image: nginx_oboe
   hostname: amtrak_nginx
   links:
     - tracelyzer
-    - endpoint
+    - web
   volumes:
     - "./nginx:/opt/nginx/config"
   volumes_from:
     - tracelyzer
-    - endpoint
+    - web
   ports:
     - "8080:8080"
