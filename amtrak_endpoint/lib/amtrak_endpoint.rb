@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'connection_pool'
+require 'unicorn'
 require 'redis'
 require 'redis/objects'
 require 'traceview'
