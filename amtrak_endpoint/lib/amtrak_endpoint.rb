@@ -3,11 +3,14 @@ require 'connection_pool'
 require 'unicorn'
 require 'redis'
 require 'redis/objects'
-require 'traceview'
 require 'amtrak'
 require 'json'
 require 'logger'
 require 'rollbar/middleware/sinatra'
+require 'clockwork'
+require 'resque'
+
+require 'traceview'
 
 require 'amtrak_endpoint/initializers'
 

@@ -1,6 +1,3 @@
-require 'clockwork'
-require 'resque'
-
 module Clockwork
   handler { |job| Resque.enqueue(job) }
 
