@@ -11,9 +11,14 @@ require 'rollbar/middleware/sinatra'
 
 require 'amtrak_endpoint/initializers'
 
+# models
 require 'amtrak_endpoint/train_route'
 
-require 'amtrak_endpoint/cache'
+# tasks
+require 'amtrak_endpoint/cache_train_times'
+require 'amtrak_endpoint/enqueue_times'
+
+# controllers
 require 'amtrak_endpoint/base'
 require 'amtrak_endpoint/get_times'
 require 'amtrak_endpoint/register_device'

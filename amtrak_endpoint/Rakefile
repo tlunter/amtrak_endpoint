@@ -19,6 +19,7 @@ end
 
 desc 'Run the Resque queue worker'
 task resque: :environment do
+  require 'resque'
   Resque.redis = Redis.new(host: REDIS_HOST)
   Resque.logger.formatter = Resque::VeryVerboseFormatter.new
   # Queue to work and 1.0 interval when checking queue
