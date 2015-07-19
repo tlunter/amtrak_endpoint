@@ -15,6 +15,42 @@ web:
   volumes_from:
     - tracelyzer
   command: unicorn
+worker1:
+  image: amtrak_endpoint
+  hostname: amtrak_endpoint
+  links:
+    - redis
+    - tracelyzer
+  volumes_from:
+    - tracelyzer
+  command: resque
+worker2:
+  image: amtrak_endpoint
+  hostname: amtrak_endpoint
+  links:
+    - redis
+    - tracelyzer
+  volumes_from:
+    - tracelyzer
+  command: resque
+worker3:
+  image: amtrak_endpoint
+  hostname: amtrak_endpoint
+  links:
+    - redis
+    - tracelyzer
+  volumes_from:
+    - tracelyzer
+  command: resque
+clockwork:
+  image: amtrak_endpoint
+  hostname: amtrak_endpoint
+  links:
+    - redis
+    - tracelyzer
+  volumes_from:
+    - tracelyzer
+  command: clockwork
 nginx:
   image: nginx_oboe
   hostname: amtrak_nginx
