@@ -9,11 +9,8 @@ module AmtrakEndpoint
 
       train_route = TrainRoute.new(from: from, to: to, date: date)
       train_route.last_request = DateTime.now
-      if tr = train_route.get_latest_times.first
-        tr.to_json
-      else
-        train_route.cache_train_times
-      end
+      tr = train_route.get_latest_times.first || train_route.cache_train_times
+      tr.to_json
     end
   end
 end

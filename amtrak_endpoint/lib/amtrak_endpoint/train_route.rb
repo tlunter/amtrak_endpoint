@@ -44,7 +44,7 @@ module AmtrakEndpoint
 
     def cache_train_times
       key = DateTime.now.iso8601
-      data = get_time_data.to_json
+      data = get_time_data
       AmtrakEndpoint.logger.info "Returned data: #{data}"
       train_times[key] = data
       cache_times.unshift(key)
@@ -56,7 +56,7 @@ module AmtrakEndpoint
 
     def get_latest_times(number=1)
       cache_times.range(0, number - 1).map do |key|
-        JSON.parse(train_times[key])
+        train_times[key]
       end
     end
 
@@ -77,7 +77,7 @@ module AmtrakEndpoint
 
     set :devices
     list :cache_times, maxlength: 20
-    hash_key :train_times
+    hash_key :train_times, marshal: true
     value :last_request, marshal: true, default: DateTime.new
   end
 end
