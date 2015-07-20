@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/tlunter/oboe-ruby.git
-  revision: 91ce076df1ed4543818a3d16364827e17f15688f
-  branch: fix-redis-problem
+  revision: 9bcdbbcb955d53c042aa54d5330655f3dae2e125
+  branch: fix-excon-problem
   specs:
     traceview (3.0.4)
       json
