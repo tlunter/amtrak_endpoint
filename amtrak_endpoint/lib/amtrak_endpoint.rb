@@ -27,7 +27,7 @@ require 'amtrak_endpoint/get_times'
 require 'amtrak_endpoint/register_device'
 
 module AmtrakEndpoint
-  class App < Sinatra::Application
+  class App < Base
     use AmtrakEndpoint::GetTimes
     use AmtrakEndpoint::RegisterDevice
   end
