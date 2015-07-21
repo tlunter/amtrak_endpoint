@@ -2,19 +2,30 @@ FROM ubuntu:14.04
 
 # Install system dependencies
 RUN apt-get -y update
-RUN apt-get -y install build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev wget git
+RUN apt-get -y install build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev wget git python
 
 # Download ruby 2.1.5
 WORKDIR /tmp/
-RUN wget -q -O /tmp/ruby-2.1.5.tar.gz http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.5.tar.gz
-RUN tar xvf ruby-2.1.5.tar.gz
 
 # Install ruby 2.1.5
-WORKDIR /tmp/ruby-2.1.5/
-RUN ./configure --disable-install-rdoc
-RUN make -j 4
-RUN make -j 4 install
+RUN wget -q -O /tmp/ruby-2.1.5.tar.gz http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.5.tar.gz && \
+    tar -xvf ruby-2.1.5.tar.gz         && \
+    cd /tmp/ruby-2.1.5/                && \
+    ./configure --disable-install-rdoc && \
+    make -j 4                          && \
+    make -j 4 install                  && \
+    cd /                               && \
+    rm -rf /tmp/ruby-2.1.5 /tmp/ruby-2.1.5.tar.gz
 RUN gem install bundler
+
+RUN wget -q -O /tmp/node-v0.12.7.tar.gz https://nodejs.org/dist/v0.12.7/node-v0.12.7.tar.gz && \
+    tar -xvf node-v0.12.7.tar.gz       && \
+    cd /tmp/node-v0.12.7/              && \
+    ./configure                        && \
+    make                               && \
+    make install                       && \
+    cd /                               && \
+    rm -rf /tmp/node-v0.12.7 /tmp/node-v0.12.7.tar.gz
 
 # Add tracelytics conf
 ADD appneta.list /etc/apt/sources.list.d/appneta.list
@@ -43,6 +54,8 @@ RUN chown -R amtrak:amtrak /opt/tlunter/
 WORKDIR /opt/tlunter/amtrak_endpoint
 USER amtrak
 RUN bundle install --path ~/.gems
+RUN npm install
+RUN node_modules/.bin/gulp
 
 COPY nginx.conf /opt/nginx/config/amtrak/nginx.conf
 
