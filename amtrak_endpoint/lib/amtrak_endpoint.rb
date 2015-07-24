@@ -9,6 +9,7 @@ require 'logger'
 require 'rollbar/middleware/sinatra'
 require 'clockwork'
 require 'resque'
+require 'uuidtools'
 
 require 'traceview'
 
@@ -16,6 +17,7 @@ require 'amtrak_endpoint/initializers'
 
 # models
 require 'amtrak_endpoint/train_route'
+require 'amtrak_endpoint/device'
 
 # tasks
 require 'amtrak_endpoint/cache_train_times'
