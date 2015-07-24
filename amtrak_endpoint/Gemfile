@@ -17,6 +17,7 @@ gem 'resque'
 gem 'rake'
 gem 'clockwork'
 gem 'uuidtools'
+gem 'dogapi'
 
 group :development do
   gem 'pry'

@@ -10,6 +10,7 @@ require 'rollbar/middleware/sinatra'
 require 'clockwork'
 require 'resque'
 require 'uuidtools'
+require 'dogapi'
 
 require 'traceview'
 
@@ -22,6 +23,7 @@ require 'amtrak_endpoint/device'
 # tasks
 require 'amtrak_endpoint/cache_train_times'
 require 'amtrak_endpoint/enqueue_times'
+require 'amtrak_endpoint/worker_heartbeat'
 
 # controllers
 require 'amtrak_endpoint/base'

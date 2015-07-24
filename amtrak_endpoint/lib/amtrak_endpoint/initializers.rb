@@ -10,6 +10,8 @@ if ENV['RACK_ENV'] == 'production'
   end
 
   ::Sinatra::Base.use Rollbar::Middleware::Sinatra
+
+  DATA_DOG_API_KEY = ENV['DATA_DOG_API_KEY']
 end
 
 REDIS_HOST = ENV['DOCKER'] ? 'redis' : 'localhost'

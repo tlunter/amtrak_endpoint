@@ -23,6 +23,8 @@ GEM
       tzinfo
     coderay (1.1.0)
     connection_pool (2.2.0)
+    dogapi (1.19.0)
+      multi_json
     excon (0.41.0)
     gcm (0.1.0)
       httparty
@@ -89,6 +91,7 @@ DEPENDENCIES
   amtrak (~> 1.2)
   clockwork
   connection_pool
+  dogapi
   gcm
   pry
   rake
