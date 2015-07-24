@@ -16,6 +16,7 @@ gem 'connection_pool'
 gem 'resque'
 gem 'rake'
 gem 'clockwork'
+gem 'uuidtools'
 
 group :development do
   gem 'pry'

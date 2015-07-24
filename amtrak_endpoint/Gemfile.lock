@@ -78,6 +78,7 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    uuidtools (2.1.4)
     vegas (0.1.11)
       rack (>= 1.0.0)
 
@@ -99,6 +100,7 @@ DEPENDENCIES
   sinatra
   traceview!
   unicorn
+  uuidtools
 
 BUNDLED WITH
    1.10.5
