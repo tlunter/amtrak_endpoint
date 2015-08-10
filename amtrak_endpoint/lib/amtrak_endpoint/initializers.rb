@@ -9,6 +9,13 @@ if ENV['RACK_ENV'] == 'production'
     config.access_token = ENV['ROLLBAR_TOKEN']
   end
 
+  require 'resque/failure/multiple'
+  require 'resque/failure/redis'
+  require 'resque/rollbar'
+
+  Resque::Failure::Multiple.classes = [ Resque::Failure::Redis, Resque::Failure::Rollbar ]
+  Resque::Failure.backend = Resque::Failure::Multiple
+
   ::Sinatra::Base.use Rollbar::Middleware::Sinatra
 
   DATA_DOG_API_KEY = ENV['DATA_DOG_API_KEY']

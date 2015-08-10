@@ -18,6 +18,7 @@ gem 'rake'
 gem 'clockwork'
 gem 'uuidtools'
 gem 'dogapi'
+gem 'resque-rollbar'
 
 group :development do
   gem 'pry'
