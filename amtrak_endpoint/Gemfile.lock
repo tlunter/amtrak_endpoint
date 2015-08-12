@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/tlunter/amtrak_gem.git
+  revision: 93fbb061877d3b05624ef5cafd258efbecd4e696
+  specs:
+    amtrak (1.2.2)
+      excon (~> 0.41.0)
+      nokogiri (~> 1.6.4)
+
+GIT
   remote: git://github.com/tlunter/oboe-ruby.git
   revision: 9bcdbbcb955d53c042aa54d5330655f3dae2e125
   branch: fix-excon-problem
@@ -15,9 +23,6 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    amtrak (1.2.2)
-      excon (~> 0.41.0)
-      nokogiri (~> 1.6.4)
     clockwork (1.2.0)
       activesupport
       tzinfo
@@ -91,7 +96,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  amtrak (~> 1.2)
+  amtrak!
   clockwork
   connection_pool
   dogapi
