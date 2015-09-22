@@ -11,6 +11,7 @@ require 'clockwork'
 require 'resque'
 require 'uuidtools'
 require 'dogapi'
+require 'gcm'
 
 require 'traceview'
 
@@ -40,5 +41,9 @@ module AmtrakEndpoint
 
   def logger
     @logger ||= Logger.new(STDOUT)
+  end
+
+  def gcm
+    @gcm ||= GCM.new(GCM_API_KEY)
   end
 end

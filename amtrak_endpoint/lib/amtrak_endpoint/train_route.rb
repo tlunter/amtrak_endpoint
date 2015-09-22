@@ -60,6 +60,60 @@ module AmtrakEndpoint
       end
     end
 
+    def alert_if_late_departure
+      train_times = get_latest_times(2)
+      if train_times.length >= 2
+        late_trains = diff_train_departures(train_times).select do |number, diff|
+          diff > (10 * 60) / 86400
+        end
+
+        unless late_trains.empty?
+          ids = devices.map(Device.method(&:new))
+            .select { |d| d.type == 'android' }
+            .map(&:uuid)
+          Device.android_alert(ids, late_trains)
+        end
+      end
+    end
+
+    def diff_train_departures(train_times)
+      AmtrakEndpoint.logger.debug("Diffing train times: #{train_times}")
+      times_by_number = train_times_by_number(train_times)
+
+      AmtrakEndpoint.logger.debug("Train times by train number: #{times_by_number}")
+      times_by_number.each_with_object({}) do |(number, (first_time, second_time)), hash|
+        if first_time[:date] != second_time[:date]
+          AmtrakEndpoint.logger.debug("Comparing two times with different dates")
+          next
+        end
+
+        first_actual_time = resolve_correct_time(first_time)
+        second_actual_time = resolve_correct_time(second_time)
+
+        hash[number] = DateTime.parse(first_actual_time) - DateTime.parse(second_actual_time)
+      end
+    end
+
+    def resolve_correct_time(train_time_by_number)
+      if train_time_by_number[:estimated_time].nil? || train_time_by_number[:estimated_time].empty?
+        train_time_by_number[:scheduled_time]
+      else
+        train_time_by_number[:estimated_time]
+      end
+    end
+
+    def train_times_by_number(train_times)
+      number_to_times = Hash.new { |hash, key| hash[key] = [] }
+
+      train_times.each do |train_time|
+        train_time.each do |train|
+          number_to_times[train[:number]] << train[:departure]
+        end
+      end
+
+      number_to_times
+    end
+
     def used?
       lr = last_request.get
       AmtrakEndpoint.logger.debug "Last Request: #{lr}"
