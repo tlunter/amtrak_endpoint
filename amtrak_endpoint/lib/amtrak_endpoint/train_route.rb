@@ -68,7 +68,7 @@ module AmtrakEndpoint
         end
 
         unless late_trains.empty?
-          ids = devices.map(Device.method(&:new))
+          ids = devices.map(&Device.method(:new))
             .select { |d| d.type == 'android' }
             .map(&:uuid)
           Device.android_alert(ids, late_trains)
@@ -81,7 +81,12 @@ module AmtrakEndpoint
       times_by_number = train_times_by_number(train_times)
 
       AmtrakEndpoint.logger.debug("Train times by train number: #{times_by_number}")
-      times_by_number.each_with_object({}) do |(number, (first_time, second_time)), hash|
+      times_by_number.each_with_object({}) do |(number, times), hash|
+        next if times.empty?
+
+        first_time = time.first
+        second_time = time.last
+
         if first_time[:date] != second_time[:date]
           AmtrakEndpoint.logger.debug("Comparing two times with different dates")
           next
