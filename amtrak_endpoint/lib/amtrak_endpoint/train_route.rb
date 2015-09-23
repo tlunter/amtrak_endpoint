@@ -84,8 +84,8 @@ module AmtrakEndpoint
       times_by_number.each_with_object({}) do |(number, times), hash|
         next if times.empty?
 
-        first_time = time.first
-        second_time = time.last
+        first_time = times.first
+        second_time = times.last
 
         if first_time[:date] != second_time[:date]
           AmtrakEndpoint.logger.debug("Comparing two times with different dates")
