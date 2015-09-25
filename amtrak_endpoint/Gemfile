@@ -22,4 +22,6 @@ gem 'resque-rollbar'
 
 group :development do
   gem 'pry'
+  gem 'rspec'
+  gem 'fakeredis'
 end
