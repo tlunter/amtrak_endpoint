@@ -23,5 +23,5 @@ gem 'resque-rollbar'
 group :development do
   gem 'pry'
   gem 'rspec'
-  gem 'fakeredis'
+  gem 'fakeredis', github: 'guilleiguaran/fakeredis'
 end

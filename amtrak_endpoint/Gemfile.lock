@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/guilleiguaran/fakeredis.git
+  revision: 4560a0725f48c3cf7e7a423e07502f886cf7b03c
+  specs:
+    fakeredis (0.5.0)
+      redis (~> 3.0)
+
+GIT
   remote: git://github.com/tlunter/amtrak_gem.git
   revision: 93fbb061877d3b05624ef5cafd258efbecd4e696
   specs:
@@ -32,8 +39,6 @@ GEM
     dogapi (1.19.0)
       multi_json
     excon (0.41.0)
-    fakeredis (0.5.0)
-      redis (~> 3.0)
     gcm (0.1.0)
       httparty
       json
@@ -116,7 +121,7 @@ DEPENDENCIES
   clockwork
   connection_pool
   dogapi
-  fakeredis
+  fakeredis!
   gcm
   pry
   rake

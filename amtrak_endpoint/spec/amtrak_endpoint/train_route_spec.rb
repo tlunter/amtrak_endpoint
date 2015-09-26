@@ -90,4 +90,22 @@ describe AmtrakEndpoint::TrainRoute do
       expect(subject.train_times[subject.cache_times.first]).to eq(amtrak_data)
     end
   end
+
+  describe '#clean_old_train_times' do
+    it 'removes keys in train_times not found in current_times' do
+      (0..20).each do |i|
+        time = DateTime.new(2015, 1, 1, 1, 1, i).iso8601
+        subject.train_times[time] = nil
+        subject.cache_times.unshift(time)
+      end
+
+      expect(subject.cache_times.length).to eq(20)
+      expect(subject.train_times.keys - subject.cache_times.values).to_not be_empty
+
+      deleted = subject.clean_old_train_times(subject.cache_times.values)
+
+      expect(deleted).to eq(1)
+      expect(subject.train_times.keys.sort.reverse).to eq(subject.cache_times.values)
+    end
+  end
 end
