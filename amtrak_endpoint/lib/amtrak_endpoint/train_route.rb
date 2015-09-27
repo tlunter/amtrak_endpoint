@@ -21,7 +21,7 @@ module AmtrakEndpoint
 
     def get_time_data
       report = { from: from, to: to, date: date }
-      date_obj = DateTime.parse(date) if date
+      date_obj = Time.parse(date) if date
       if TraceView.tracing?
         AmtrakEndpoint.logger.debug('Tracing amtrak data')
         TraceView::API.trace('amtrak', report) do
@@ -43,7 +43,7 @@ module AmtrakEndpoint
     end
 
     def cache_train_times
-      key = DateTime.now.iso8601
+      key = Time.now.iso8601
       data = get_time_data
       AmtrakEndpoint.logger.info "Returned data: #{data}"
       train_times[key] = data
@@ -55,68 +55,50 @@ module AmtrakEndpoint
     end
 
     def get_latest_times(number=1)
-      cache_times.range(0, number - 1).map do |key|
-        train_times[key]
-      end
+      return [] if number < 1
+
+      cache_times[0...number].map(&train_times.method(:[]))
     end
 
     def alert_if_late_departure
-      train_times = get_latest_times(2)
-      if train_times.length >= 2
-        late_trains = diff_train_departures(train_times).select do |number, diff|
-          diff > (10 * 60) / 86400
-        end
-
-        unless late_trains.empty?
-          ids = devices.map(&Device.method(:new))
-            .select { |d| d.type == 'android' }
-            .map(&:uuid)
-          Device.android_alert(ids, late_trains)
-        end
-      end
-    end
-
-    def diff_train_departures(train_times)
-      AmtrakEndpoint.logger.debug("Diffing train times: #{train_times}")
+      train_times     = get_latest_times(5)
       times_by_number = train_times_by_number(train_times)
+      late_trains     = find_late_train_departures(times_by_number)
 
-      AmtrakEndpoint.logger.debug("Train times by train number: #{times_by_number}")
-      times_by_number.each_with_object({}) do |(number, times), hash|
-        next if times.empty?
-
-        first_time = times.first
-        second_time = times.last
-
-        if first_time[:date] != second_time[:date]
-          AmtrakEndpoint.logger.debug("Comparing two times with different dates")
-          next
-        end
-
-        first_actual_time = resolve_correct_time(first_time)
-        second_actual_time = resolve_correct_time(second_time)
-
-        hash[number] = DateTime.parse(first_actual_time) - DateTime.parse(second_actual_time)
+      unless late_trains.empty?
+        ids = devices.map(&Device.method(:new))
+          .select { |d| d.type == 'android' }
+          .map(&:uuid)
+          .tap { |i| AmtrakEndpoint.logger.debug("Alerting devices: #{i}") }
+        Device.android_alert(ids, late_trains)
       end
     end
 
-    def resolve_correct_time(train_time_by_number)
-      if train_time_by_number[:estimated_time].nil? || train_time_by_number[:estimated_time].empty?
-        train_time_by_number[:scheduled_time]
-      else
-        train_time_by_number[:estimated_time]
-      end
+    def scheduled_versus_estimated(times)
+      return if times[:estimated_time].nil? || times[:estimated_time].empty?
+
+      Time.parse(times[:estimated_time]) - Time.parse(times[:scheduled_time])
+    end
+
+    def find_late_train_departures(times_by_number)
+      times_by_number
+        .select { |_, all_times| all_times.length > 1 }
+        .map { |number, all_times| [number, all_times.map { |t| t[:departure] }] }
+        .select { |_, departure_times| departure_times.group_by { |t| t[:date] }.length == 1 }
+        .select do |_, departure_times|
+          departure_times.all? do |departure_time|
+            (diff = scheduled_versus_estimated(departure_time)) && diff > (5 * 60)
+          end
+        end
+        .map(&:first)
+        .tap { |t| AmtrakEndpoint.logger.debug("Late trains: #{t}") }
     end
 
     def train_times_by_number(train_times)
-      number_to_times = Hash.new { |hash, key| hash[key] = [] }
-
-      train_times.each do |train_time|
-        train_time.each do |train|
-          number_to_times[train[:number]] << train[:departure]
-        end
-      end
-
-      number_to_times
+      train_times
+        .flatten
+        .group_by { |t| t[:number] }
+        .tap { |t| AmtrakEndpoint.logger.debug("Train times by train number: #{t}") }
     end
 
     def used?
@@ -137,6 +119,6 @@ module AmtrakEndpoint
     set :devices
     list :cache_times, maxlength: 20
     hash_key :train_times, marshal: true
-    value :last_request, marshal: true, default: DateTime.new
+    value :last_request, marshal: true, default: Time.new
   end
 end

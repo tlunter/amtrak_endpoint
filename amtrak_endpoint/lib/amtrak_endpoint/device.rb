@@ -4,7 +4,7 @@ module AmtrakEndpoint
 
     def self.android_alert(ids, late_trains)
       AmtrakEndpoint.gcm.send(
-        [ids],
+        [*ids],
         data: { late_trains: late_trains },
         collapse_key: 'late_trains'
       )
