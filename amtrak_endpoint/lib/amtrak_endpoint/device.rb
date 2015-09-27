@@ -3,11 +3,13 @@ module AmtrakEndpoint
     include Redis::Objects
 
     def self.android_alert(ids, late_trains)
+      ids = [*ids]
+
       AmtrakEndpoint.gcm.send(
-        [*ids],
+        ids,
         data: { late_trains: late_trains },
         collapse_key: 'late_trains'
-      )
+      ) unless ids.empty?
     end
 
     attr_reader :uuid
