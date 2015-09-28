@@ -3,8 +3,12 @@ module AmtrakEndpoint
     post %r{^/register/android\.json} do
       headers['Content-Type'] = 'application/json'
 
-      train_routes = JSON.parse(request.body.tap(&:rewind).read)
+      body = request.body.tap(&:rewind).read
 
+      AmtrakEndpoint.logger.debug(
+        "Registering device: #{params['device_id']} with: #{body}"
+      )
+      train_routes = JSON.parse(body)
       train_routes.each do |train_route|
         device = AmtrakEndpoint::Device.new(params['device_id'])
         device.type = 'android'
