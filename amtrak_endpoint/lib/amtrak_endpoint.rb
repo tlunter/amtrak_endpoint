@@ -32,11 +32,6 @@ require 'amtrak_endpoint/get_times'
 require 'amtrak_endpoint/register_device'
 
 module AmtrakEndpoint
-  class App < Base
-    use AmtrakEndpoint::GetTimes
-    use AmtrakEndpoint::RegisterDevice
-  end
-
   module_function
 
   def logger
@@ -45,5 +40,11 @@ module AmtrakEndpoint
 
   def gcm
     @gcm ||= GCM.new(GCM_API_KEY)
+  end
+
+  class App < Base
+    use Rack::CommonLogger, AmtrakEndpoint.logger
+    use AmtrakEndpoint::GetTimes
+    use AmtrakEndpoint::RegisterDevice
   end
 end
