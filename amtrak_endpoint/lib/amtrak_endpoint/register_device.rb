@@ -1,6 +1,6 @@
 module AmtrakEndpoint
   class RegisterDevice < Base
-    post %r{^/register/android/(?<device_id>[^\.]+)\.json} do
+    post %r{^/register/android\.json} do
       headers['Content-Type'] = 'application/json'
 
       train_routes = JSON.parse(request.body.tap(&:rewind).read)
