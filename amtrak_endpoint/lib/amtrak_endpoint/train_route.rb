@@ -75,9 +75,9 @@ module AmtrakEndpoint
     end
 
     def scheduled_versus_estimated(times)
-      return if times[:estimated_time].nil? || times[:estimated_time].empty?
+      return if times[:estimated_time].to_s.strip.empty?
 
-      Time.parse(times[:estimated_time]) - Time.parse(times[:scheduled_time])
+      Time.parse(times[:estimated_time].strip) - Time.parse(times[:scheduled_time].strip)
     end
 
     def find_late_train_departures(times_by_number)

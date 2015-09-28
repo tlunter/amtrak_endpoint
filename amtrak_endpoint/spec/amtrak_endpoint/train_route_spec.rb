@@ -254,17 +254,34 @@ describe AmtrakEndpoint::TrainRoute do
     end
 
     context 'with only scheduled time' do
-      let(:train_time) do
-        {
-          date: "Fri, Sep 25 2015",
-          scheduled_time: "6:56 am",
-          estimated_time: ""
-        }
+      context 'with an empty estimated_time' do
+        let(:train_time) do
+          {
+            date: "Fri, Sep 25 2015",
+            scheduled_time: "6:56 am",
+            estimated_time: ""
+          }
+        end
+
+        it 'returns the minute difference' do
+          expect(subject.scheduled_versus_estimated(train_time))
+            .to be_nil
+        end
       end
 
-      it 'returns the minute difference' do
-        expect(subject.scheduled_versus_estimated(train_time))
-          .to be_nil
+      context 'with a new line in estimated_time' do
+        let(:train_time) do
+          {
+            date: "Fri, Sep 25 2015",
+            scheduled_time: "6:56 am",
+            estimated_time: "\n"
+          }
+        end
+
+        it 'returns the minute difference' do
+          expect(subject.scheduled_versus_estimated(train_time))
+            .to be_nil
+        end
       end
     end
   end
