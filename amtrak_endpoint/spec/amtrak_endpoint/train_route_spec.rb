@@ -274,7 +274,7 @@ describe AmtrakEndpoint::TrainRoute do
           {
             date: "Fri, Sep 25 2015",
             scheduled_time: "6:56 am",
-            estimated_time: "\n"
+            estimated_time: "\u00A0"
           }
         end
 
@@ -288,7 +288,7 @@ describe AmtrakEndpoint::TrainRoute do
         let(:train_time) do
           {
             date: "Fri, Sep 25 2015",
-            scheduled_time: "\n",
+            scheduled_time: "\u00A0",
             estimated_time: "6:56 am"
           }
         end

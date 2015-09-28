@@ -75,8 +75,8 @@ module AmtrakEndpoint
     end
 
     def scheduled_versus_estimated(times)
-      estimated_time = times[:estimated_time].to_s.strip
-      scheduled_time = times[:scheduled_time].to_s.strip
+      estimated_time = times[:estimated_time].to_s.gsub(/\u0000-\u001F/, '').strip
+      scheduled_time = times[:scheduled_time].to_s.gsub(/\u0000-\u001F/, '').strip
 
       return if estimated_time.empty? || scheduled_time.empty?
 
