@@ -34,8 +34,14 @@ require 'amtrak_endpoint/register_device'
 module AmtrakEndpoint
   module_function
 
+  class CustomLogger < Logger
+    def write(*args)
+      debug(*args)
+    end
+  end
+
   def logger
-    @logger ||= Logger.new(STDOUT)
+    @logger ||= CustomLogger.new(STDOUT)
   end
 
   def gcm
