@@ -21,7 +21,7 @@ module AmtrakEndpoint
 
     def get_time_data
       report = { from: from, to: to, date: date }
-      date_obj = Time.parse(date) if date
+      date_obj = Time.parse(date) unless date.nil? || date.strip.empty?
       if TraceView.tracing?
         AmtrakEndpoint.logger.debug('Tracing amtrak data')
         TraceView::API.trace('amtrak', report) do
@@ -75,9 +75,12 @@ module AmtrakEndpoint
     end
 
     def scheduled_versus_estimated(times)
-      return if times[:estimated_time].to_s.strip.empty?
+      estimated_time = times[:estimated_time].to_s.strip
+      scheduled_time = times[:scheduled_time].to_s.strip
 
-      Time.parse(times[:estimated_time].strip) - Time.parse(times[:scheduled_time].strip)
+      return if estimated_time.empty? || scheduled_time.empty?
+
+      Time.parse(estimated_time) - Time.parse(scheduled_time)
     end
 
     def find_late_train_departures(times_by_number)
