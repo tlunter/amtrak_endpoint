@@ -47,14 +47,4 @@ module AmtrakEndpoint
   def gcm
     @gcm ||= GCM.new(GCM_API_KEY)
   end
-
-  class App < Base
-    use Rack::CommonLogger, AmtrakEndpoint.logger
-    use Rack::Cascade.new(
-      [
-        AmtrakEndpoint::RegisterDevice,
-        AmtrakEndpoint::GetTimes
-      ]
-    )
-  end
 end

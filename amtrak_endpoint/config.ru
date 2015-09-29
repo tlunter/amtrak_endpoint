@@ -2,4 +2,5 @@ require 'amtrak_endpoint'
 
 STDOUT.sync = true
 
-run AmtrakEndpoint::App
+use Rack::CommonLogger, AmtrakEndpoint.logger
+run Rack::Cascade.new([AmtrakEndpoint::RegisterDevice, AmtrakEndpoint::GetTimes])
