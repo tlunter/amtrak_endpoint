@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'active_support'
 require 'connection_pool'
 require 'unicorn'
 require 'redis'

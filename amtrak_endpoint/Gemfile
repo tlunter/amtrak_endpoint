@@ -19,6 +19,7 @@ gem 'clockwork'
 gem 'uuidtools'
 gem 'dogapi'
 gem 'resque-rollbar'
+gem 'activesupport'
 
 group :development do
   gem 'pry'

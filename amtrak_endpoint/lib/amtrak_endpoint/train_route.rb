@@ -21,7 +21,11 @@ module AmtrakEndpoint
 
     def get_time_data
       report = { from: from, to: to, date: date }
-      date_obj = Time.parse(date) unless date.nil? || date.strip.empty?
+      if date.nil? || date.strip.empty?
+        date_obj = Time.now.in_time_zone('Pacific Time (US & Canada)').to_date
+      else
+        date_obj = Time.parse(date)
+      end
       if TraceView.tracing?
         AmtrakEndpoint.logger.debug('Tracing amtrak data')
         TraceView::API.trace('amtrak', report) do
