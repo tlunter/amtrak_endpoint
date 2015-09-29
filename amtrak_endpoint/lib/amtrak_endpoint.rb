@@ -50,7 +50,7 @@ module AmtrakEndpoint
 
   class App < Base
     use Rack::CommonLogger, AmtrakEndpoint.logger
-    use AmtrakEndpoint::GetTimes
     use AmtrakEndpoint::RegisterDevice
+    use AmtrakEndpoint::GetTimes
   end
 end
