@@ -68,30 +68,35 @@ module AmtrakEndpoint
       train_times     = get_latest_times(5)
       times_by_number = train_times_by_number(train_times)
       late_trains     = find_late_train_departures(times_by_number)
+      cancelled_trains = find_cancelled_train_departures(times_by_number)
+
+      android_devices = devices.map(&Device.method(:new))
+        .select { |d| d.type == 'android' }
+        .map(&:uuid)
+        .tap { |i| AmtrakEndpoint.logger.debug("Alerting devices: #{i}") }
 
       unless late_trains.empty?
-        ids = devices.map(&Device.method(:new))
-          .select { |d| d.type == 'android' }
-          .map(&:uuid)
-          .tap { |i| AmtrakEndpoint.logger.debug("Alerting devices: #{i}") }
-        Device.android_alert(ids, late_trains)
+        Device.android_alert(android_devices, late_trains: late_trains)
+      end
+
+      unless cancelled_trains.empty?
+        Device.android_alert(android_devices, cancelled_trains: cancelled_trains)
       end
     end
 
     def scheduled_versus_estimated(times)
-      estimated_time = times[:estimated_time].to_s.gsub(/\u0000-\u001F/, '').strip
-      scheduled_time = times[:scheduled_time].to_s.gsub(/\u0000-\u001F/, '').strip
+      estimated_time = times[:estimated_time].to_s.gsub(/[[:cntrl:]]/, '').strip
+      scheduled_time = times[:scheduled_time].to_s.gsub(/[[:cntrl:]]/, '').strip
 
       return if estimated_time.empty? || scheduled_time.empty?
 
       Time.parse(estimated_time) - Time.parse(scheduled_time)
+    rescue ArgumentError
+      nil
     end
 
     def find_late_train_departures(times_by_number)
-      times_by_number
-        .select { |_, all_times| all_times.length > 1 }
-        .map { |number, all_times| [number, all_times.map { |t| t[:departure] }] }
-        .select { |_, departure_times| departure_times.group_by { |t| t[:date] }.length == 1 }
+      depature_times(times_by_number)
         .select do |_, departure_times|
           departure_times.all? do |departure_time|
             (diff = scheduled_versus_estimated(departure_time)) && diff > (5 * 60)
@@ -99,6 +104,24 @@ module AmtrakEndpoint
         end
         .map(&:first)
         .tap { |t| AmtrakEndpoint.logger.debug("Late trains: #{t}") }
+    end
+
+    def find_cancelled_train_departures(times_by_number)
+      depature_times(times_by_number)
+        .select do |_, departure_times|
+          departure_times.all? do |time|
+            time[:estimated_time] =~ /cancelled/i
+          end
+        end
+        .map(&:first)
+        .tap { |t| AmtrakEndpoint.logger.debug("Cancelled trains: #{t}") }
+    end
+
+    def depature_times(times_by_number)
+      times_by_number
+        .select { |_, all_times| all_times.length > 1 }
+        .map { |number, all_times| [number, all_times.map { |t| t[:departure] }] }
+        .select { |_, departure_times| departure_times.group_by { |t| t[:date] }.length == 1 }
     end
 
     def train_times_by_number(train_times)
