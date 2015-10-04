@@ -76,11 +76,21 @@ module AmtrakEndpoint
         .tap { |i| AmtrakEndpoint.logger.debug("Alerting devices: #{i}") }
 
       unless late_trains.empty?
-        Device.android_alert(android_devices, late_trains: late_trains)
+        Device.android_alert(
+          android_devices,
+          late_trains: late_trains,
+          from: from,
+          to: to
+        )
       end
 
       unless cancelled_trains.empty?
-        Device.android_alert(android_devices, cancelled_trains: cancelled_trains)
+        Device.android_alert(
+          android_devices,
+          cancelled_trains: cancelled_trains,
+          from: from,
+          to: to
+        )
       end
     end
 
