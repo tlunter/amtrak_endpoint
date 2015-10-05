@@ -65,31 +65,25 @@ module AmtrakEndpoint
     end
 
     def alert_if_late_departure
-      train_times     = get_latest_times(5)
-      times_by_number = train_times_by_number(train_times)
-      late_trains     = find_late_train_departures(times_by_number)
+      train_times      = get_latest_times(5)
+      times_by_number  = train_times_by_number(train_times)
+      late_trains      = find_late_train_departures(times_by_number)
       cancelled_trains = find_cancelled_train_departures(times_by_number)
 
-      android_devices = devices.map(&Device.method(:new))
-        .select { |d| d.type == 'android' }
-        .map(&:uuid)
-        .tap { |i| AmtrakEndpoint.logger.debug("Alerting devices: #{i}") }
+      payload = { late_trains: late_trains, cancelled_trains: cancelled_trains }
+        .reject { |_, v| v.nil? || v.empty? }
 
-      unless late_trains.empty?
+      unless payload.empty?
+        android_devices = devices.map(&Device.method(:new))
+          .select { |d| d.type == 'android' }
+          .map(&:uuid)
+          .tap { |i| AmtrakEndpoint.logger.debug("Alerting devices: #{i}") }
+
         Device.android_alert(
           android_devices,
-          late_trains: late_trains,
           from: from,
-          to: to
-        )
-      end
-
-      unless cancelled_trains.empty?
-        Device.android_alert(
-          android_devices,
-          cancelled_trains: cancelled_trains,
-          from: from,
-          to: to
+          to: to,
+          **payload
         )
       end
     end

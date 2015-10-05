@@ -7,7 +7,7 @@ module AmtrakEndpoint
 
       AmtrakEndpoint.gcm.send(
         ids,
-        data: payload,
+        data: { timing_alert: payload },
         collapse_key: 'timing_alert'
       ) unless ids.empty?
     end
