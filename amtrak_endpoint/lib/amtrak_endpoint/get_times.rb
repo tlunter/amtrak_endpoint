@@ -1,6 +1,6 @@
 module AmtrakEndpoint
   class GetTimes < Base
-    get %r{^/(?<from>[^/.]*)/(?<to>[^/.]*)\.json} do
+    get %r{^(\/api)?\/(?<from>[^\/.]*)\/(?<to>[^\/.]*)\.json} do
       headers['Content-Type'] = 'application/json'
 
       from = params["from"]

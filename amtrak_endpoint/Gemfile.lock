@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/tlunter/amtrak_gem.git
-  revision: 93fbb061877d3b05624ef5cafd258efbecd4e696
+  revision: ba668a76536023bae0f5b9e55dd7f2d1f0873f1d
   specs:
     amtrak (1.2.2)
       excon (~> 0.41.0)
