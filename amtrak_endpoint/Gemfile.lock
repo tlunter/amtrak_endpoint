@@ -7,19 +7,11 @@ GIT
 
 GIT
   remote: git://github.com/tlunter/amtrak_gem.git
-  revision: 3d099fff243f5dcf80ab6f3c53b1c4ce6d3f0f09
+  revision: 0cc5732bb174715e3aab27aa726e8af82bd5e2c1
   specs:
     amtrak (1.2.2)
-      excon (~> 0.41.0)
+      excon (~> 0.41)
       nokogiri (~> 1.6.4)
-
-GIT
-  remote: git://github.com/tlunter/oboe-ruby.git
-  revision: 9bcdbbcb955d53c042aa54d5330655f3dae2e125
-  branch: fix-excon-problem
-  specs:
-    traceview (3.0.4)
-      json
 
 GEM
   remote: https://rubygems.org/
@@ -38,7 +30,7 @@ GEM
     diff-lcs (1.2.5)
     dogapi (1.19.0)
       multi_json
-    excon (0.41.0)
+    excon (0.45.4)
     gcm (0.1.0)
       httparty
       json
@@ -54,7 +46,7 @@ GEM
     mono_logger (1.1.0)
     multi_json (1.11.2)
     multi_xml (0.5.5)
-    nokogiri (1.6.7.1)
+    nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     pry (0.10.1)
       coderay (~> 1.1.0)
@@ -103,6 +95,8 @@ GEM
     slop (3.6.0)
     thread_safe (0.3.5)
     tilt (2.0.1)
+    traceview (3.4.2)
+      json
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     unicorn (4.8.3)
@@ -134,9 +128,9 @@ DEPENDENCIES
   rspec
   shotgun
   sinatra
-  traceview!
+  traceview
   unicorn
   uuidtools
 
 BUNDLED WITH
-   1.10.5
+   1.11.2
