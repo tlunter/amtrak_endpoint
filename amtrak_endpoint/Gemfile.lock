@@ -13,6 +13,14 @@ GIT
       excon (~> 0.41)
       nokogiri (~> 1.6.4)
 
+GIT
+  remote: git://github.com/tlunter/oboe-ruby.git
+  revision: 126f96c2d3f2d8279711af76ad55371c0e0f24a0
+  branch: fix-excon-problem
+  specs:
+    traceview (3.4.2)
+      json
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -95,8 +103,6 @@ GEM
     slop (3.6.0)
     thread_safe (0.3.5)
     tilt (2.0.1)
-    traceview (3.4.2)
-      json
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     unicorn (4.8.3)
@@ -128,7 +134,7 @@ DEPENDENCIES
   rspec
   shotgun
   sinatra
-  traceview
+  traceview!
   unicorn
   uuidtools
 

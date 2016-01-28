@@ -1,28 +1,28 @@
-$LOAD_PATH << File.join(Dir.pwd, 'lib')
+$LOAD_PATH << File.join(Dir.pwd, "lib")
 $LOAD_PATH << Dir.pwd
 
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem 'amtrak', github: 'tlunter/amtrak_gem'
-gem 'gcm'
-gem 'shotgun'
-gem 'sinatra'
-gem 'unicorn'
-gem 'redis'
-gem 'traceview'
-gem 'rollbar', '~> 1.5.0'
-gem 'redis-objects'
-gem 'connection_pool'
-gem 'resque'
-gem 'rake'
-gem 'clockwork'
-gem 'uuidtools'
-gem 'dogapi'
-gem 'resque-rollbar'
-gem 'activesupport'
+gem "amtrak", github: "tlunter/amtrak_gem"
+gem "gcm"
+gem "shotgun"
+gem "sinatra"
+gem "unicorn"
+gem "redis"
+gem "traceview", github: "tlunter/oboe-ruby", branch: "fix-excon-problem"
+gem "rollbar", "~> 1.5.0"
+gem "redis-objects"
+gem "connection_pool"
+gem "resque"
+gem "rake"
+gem "clockwork"
+gem "uuidtools"
+gem "dogapi"
+gem "resque-rollbar"
+gem "activesupport"
 
 group :development do
-  gem 'pry'
-  gem 'rspec'
-  gem 'fakeredis', github: 'guilleiguaran/fakeredis'
+  gem "pry"
+  gem "rspec"
+  gem "fakeredis", github: "guilleiguaran/fakeredis"
 end
