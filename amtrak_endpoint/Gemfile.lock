@@ -5,22 +5,6 @@ GIT
     fakeredis (0.5.0)
       redis (~> 3.0)
 
-GIT
-  remote: git://github.com/tlunter/amtrak_gem.git
-  revision: 0cc5732bb174715e3aab27aa726e8af82bd5e2c1
-  specs:
-    amtrak (1.2.2)
-      excon (~> 0.41)
-      nokogiri (~> 1.6.4)
-
-GIT
-  remote: git://github.com/tlunter/oboe-ruby.git
-  revision: 126f96c2d3f2d8279711af76ad55371c0e0f24a0
-  branch: fix-excon-problem
-  specs:
-    traceview (3.4.2)
-      json
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -30,6 +14,9 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    amtrak (2.0.0)
+      mechanize (~> 2.7)
+      nokogiri (~> 1.6.4)
     clockwork (1.2.0)
       activesupport
       tzinfo
@@ -38,24 +25,40 @@ GEM
     diff-lcs (1.2.5)
     dogapi (1.19.0)
       multi_json
-    excon (0.45.4)
+    domain_name (0.5.20160309)
+      unf (>= 0.0.5, < 1.0.0)
     gcm (0.1.0)
       httparty
       json
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
     httparty (0.13.5)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
     json (1.8.2)
     kgio (2.9.2)
+    mechanize (2.7.4)
+      domain_name (~> 0.5, >= 0.5.1)
+      http-cookie (~> 1.0)
+      mime-types (>= 1.17.2, < 3)
+      net-http-digest_auth (~> 1.1, >= 1.1.1)
+      net-http-persistent (~> 2.5, >= 2.5.2)
+      nokogiri (~> 1.6)
+      ntlm-http (~> 0.1, >= 0.1.1)
+      webrobots (>= 0.0.9, < 0.2)
     method_source (0.8.2)
+    mime-types (2.99.1)
     mini_portile2 (2.0.0)
     minitest (5.7.0)
     mono_logger (1.1.0)
     multi_json (1.11.2)
     multi_xml (0.5.5)
+    net-http-digest_auth (1.4)
+    net-http-persistent (2.9.4)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    ntlm-http (0.1.1)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -103,8 +106,13 @@ GEM
     slop (3.6.0)
     thread_safe (0.3.5)
     tilt (2.0.1)
+    traceview (3.6.0)
+      json
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.2)
     unicorn (4.8.3)
       kgio (~> 2.6)
       rack
@@ -112,13 +120,14 @@ GEM
     uuidtools (2.1.4)
     vegas (0.1.11)
       rack (>= 1.0.0)
+    webrobots (0.1.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   activesupport
-  amtrak!
+  amtrak (~> 2.0.0)
   clockwork
   connection_pool
   dogapi
@@ -134,7 +143,7 @@ DEPENDENCIES
   rspec
   shotgun
   sinatra
-  traceview!
+  traceview
   unicorn
   uuidtools
 
