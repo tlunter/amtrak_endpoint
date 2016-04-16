@@ -1,6 +1,6 @@
 cluster :app do |c|
   c.cluster_instance :'tlunter.com' do |ci|
-    ci.ip = 'tlunter.com'
+    ci.ip = '127.0.0.1'
     ci.remote(url: 'tcp://tlunter.com:2376')
     ci.options = { cert_path: File.join(Dir.home, '.docker', 'tlunter.com', 'certs'), ssl_verify_peer: false }
   end
@@ -19,11 +19,13 @@ application :amtrak do |a|
     c.image = :amtrak_redis
     c.hostname = :amtrak_redis
     c.volumes = ['./amtrak_redis:/redis']
+    c.restart = { Name: "on-failure", MaximumRetryCount: 0 }
   end
 
   a.container :tracelyzer do |c|
     c.image = :tracelyzer
     c.hostname = :amtrak_tracelyzer
+    c.restart = { Name: "on-failure", MaximumRetryCount: 0 }
   end
 
   a.container :web do |c|
@@ -38,10 +40,10 @@ application :amtrak do |a|
       GCM_API_KEY: nil,
     }
     c.command = 'unicorn'
+    c.restart = { Name: "on-failure", MaximumRetryCount: 0 }
   end
 
   a.container :worker do |c|
-    c.scale = 3
     c.image = :amtrak_endpoint
     c.hostname = :amtrak_endpoint
     c.link :redis
@@ -53,6 +55,7 @@ application :amtrak do |a|
       GCM_API_KEY: nil,
     }
     c.command = 'resque'
+    c.restart = { Name: "on-failure", MaximumRetryCount: 0 }
   end
 
   a.container :clockwork do |c|
@@ -67,6 +70,7 @@ application :amtrak do |a|
       GCM_API_KEY: nil,
     }
     c.command = 'clockwork'
+    c.restart = { Name: "on-failure", MaximumRetryCount: 0 }
   end
 
   a.container :nginx do |c|
@@ -84,6 +88,7 @@ application :amtrak do |a|
       GCM_API_KEY: nil,
     }
     c.appear_in_load_balancer = true
+    c.restart = { Name: "on-failure", MaximumRetryCount: 0 }
   end
 end
 

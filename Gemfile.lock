@@ -1,10 +1,10 @@
 GIT
   remote: git://github.com/tlunter/app_deployer.git
-  revision: be6dd511de502ce17b0a671908beb2edd8a015fc
+  revision: d50ca97230460cf7e936a6388d9ac39308c23c94
   specs:
     app_deployer (0.0.1)
       activesupport
-      docker-api (~> 1.22.2)
+      docker-api (~> 1.22)
       excon (~> 0.45)
       net-ssh (~> 2.9.2)
       nokogiri (~> 1.6.4)
@@ -13,23 +13,23 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (4.2.4)
+    activesupport (4.2.6)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    docker-api (1.22.4)
+    docker-api (1.26.2)
       excon (>= 0.38.0)
       json
     excon (0.45.4)
     i18n (0.7.0)
     json (1.8.3)
-    mini_portile (0.6.2)
-    minitest (5.8.1)
-    net-ssh (2.9.2)
-    nokogiri (1.6.6.2)
-      mini_portile (~> 0.6.0)
+    mini_portile2 (2.0.0)
+    minitest (5.8.4)
+    net-ssh (2.9.4)
+    nokogiri (1.6.7.2)
+      mini_portile2 (~> 2.0.0.rc2)
     thor (0.19.1)
     thread_safe (0.3.5)
     tzinfo (1.2.2)
@@ -42,4 +42,4 @@ DEPENDENCIES
   app_deployer!
 
 BUNDLED WITH
-   1.10.5
+   1.11.2
