@@ -9,7 +9,13 @@ module AmtrakEndpoint
 
       train_route = TrainRoute.new(from: from, to: to, date: date)
       train_route.last_request = DateTime.now
-      tr = train_route.get_latest_times.first || train_route.cache_train_times
+
+      tr = train_route
+        .get_latest_times(TrainRoute::MAX_TIMES)
+        .reject(&:empty?)
+        .first
+      tr ||= train_route.cache_train_times
+
       tr.to_json
     end
   end

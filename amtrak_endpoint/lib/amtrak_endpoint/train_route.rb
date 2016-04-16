@@ -2,6 +2,8 @@ module AmtrakEndpoint
   class TrainRoute
     include Redis::Objects
 
+    MAX_TIMES = 20
+
     def self.prepare(identifier)
       from, to, date = identifier.split("\36")
       new(from: from, to: to, date: date)
@@ -151,7 +153,7 @@ module AmtrakEndpoint
     end
 
     set :devices
-    list :cache_times, maxlength: 20
+    list :cache_times, maxlength: MAX_TIMES
     hash_key :train_times, marshal: true
     value :last_request, marshal: true, default: Time.new
   end
