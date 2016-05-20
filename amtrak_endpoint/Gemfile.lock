@@ -5,6 +5,13 @@ GIT
     fakeredis (0.5.0)
       redis (~> 3.0)
 
+GIT
+  remote: git://github.com/tlunter/rocker.git
+  revision: 656772b8ad35f3638d4a87912e0d5bb03f54ffaf
+  specs:
+    rocker (0.0.1)
+      docker-api (>= 1.23.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -23,10 +30,14 @@ GEM
     coderay (1.1.0)
     connection_pool (2.2.0)
     diff-lcs (1.2.5)
+    docker-api (1.28.0)
+      excon (>= 0.38.0)
+      json
     dogapi (1.19.0)
       multi_json
     domain_name (0.5.20160309)
       unf (>= 0.0.5, < 1.0.0)
+    excon (0.49.0)
     gcm (0.1.0)
       httparty
       json
@@ -139,6 +150,7 @@ DEPENDENCIES
   redis-objects
   resque
   resque-rollbar
+  rocker!
   rollbar (~> 1.5.0)
   rspec
   shotgun

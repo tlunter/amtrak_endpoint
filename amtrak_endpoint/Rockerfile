@@ -1,0 +1,78 @@
+from 'ubuntu:14.04'
+
+# Install system dependencies
+run 'apt-get -y update'
+run 'apt-get -y install build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev wget git python'
+
+# Download ruby 2.1.5
+workdir '/tmp/'
+
+# Install ruby 2.1.5
+run [
+      'sh',
+      '-c',
+      'wget -q -O /tmp/ruby-2.1.5.tar.gz http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.5.tar.gz && \
+       tar -xvf ruby-2.1.5.tar.gz         && \
+       cd /tmp/ruby-2.1.5/                && \
+       ./configure --disable-install-rdoc && \
+       make -j 4                          && \
+       make -j 4 install                  && \
+       cd /                               && \
+       rm -rf /tmp/ruby-2.1.5 /tmp/ruby-2.1.5.tar.gz'
+    ]
+run 'gem install bundler'
+
+run [
+      'sh',
+      '-c',
+      'wget -q -O /tmp/node-v0.12.7.tar.gz https://nodejs.org/dist/v0.12.7/node-v0.12.7.tar.gz && \
+       tar -xvf node-v0.12.7.tar.gz       && \
+       cd /tmp/node-v0.12.7/              && \
+       ./configure                        && \
+       make                               && \
+       make install                       && \
+       cd /                               && \
+       rm -rf /tmp/node-v0.12.7 /tmp/node-v0.12.7.tar.gz'
+    ]
+
+# Add tracelytics conf
+add 'appneta.list', '/etc/apt/sources.list.d/appneta.list'
+add 'tracelytics.conf', '/etc/tracelytics.conf'
+
+# Install Tracelyzer
+run ['/bin/sh', '-c', "wget -qO- https://apt.appneta.com/appneta-apt-key.pub | apt-key add -"]
+run 'apt-get -y update'
+run 'apt-get -y install liboboe0 liboboe-dev'
+
+run 'groupadd --gid 1000 amtrak'
+run 'useradd --uid 1000 --gid 1000 --create-home amtrak'
+
+user 'amtrak'
+add 'Gemfile', '/tmp/Gemfile'
+add 'Gemfile.lock', '/tmp/Gemfile.lock'
+run 'bundle config --global jobs 8'
+run 'bundle install --path ~/.gems'
+
+workdir '/'
+user 'root'
+run 'mkdir -p /opt/tlunter/amtrak_endpoint'
+git_archive '.', '/opt/tlunter/amtrak_endpoint/'
+run 'chown -R amtrak:amtrak /opt/tlunter/'
+run 'mkdir -p /opt/nginx/config/amtrak/'
+
+# Install ruby dependencies
+workdir '/opt/tlunter/amtrak_endpoint'
+user 'amtrak'
+run 'bundle install --path ~/.gems'
+run 'npm install'
+run 'node_modules/.bin/gulp'
+
+add 'nginx.conf', '/opt/nginx/config/amtrak/nginx.conf'
+
+entrypoint ["bundle", "exec", "rake"]
+env 'DOCKER', 'true'
+env 'RACK_ENV', 'production'
+env 'ENVIRONMENT', 'production'
+expose '3000'
+volume '/opt/tlunter/amtrak_endpoint/public'
+volume '/opt/nginx/config/amtrak'

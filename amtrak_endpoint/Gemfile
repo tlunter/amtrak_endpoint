@@ -21,6 +21,8 @@ gem "dogapi"
 gem "resque-rollbar"
 gem "activesupport"
 
+gem "rocker", github: 'tlunter/rocker'
+
 group :development do
   gem "pry"
   gem "rspec"

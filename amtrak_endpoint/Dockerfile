@@ -57,7 +57,7 @@ RUN bundle install --path ~/.gems
 RUN npm install
 RUN node_modules/.bin/gulp
 
-COPY nginx.conf /opt/nginx/config/amtrak/nginx.conf
+ADD nginx.conf /opt/nginx/config/amtrak/nginx.conf
 
 ENTRYPOINT ["bundle", "exec", "rake"]
 ENV DOCKER true
