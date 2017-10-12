@@ -3,7 +3,7 @@ $LOAD_PATH << Dir.pwd
 
 source "https://rubygems.org"
 
-gem "amtrak", "~> 2.0.0"
+gem "amtrak", "~> 3.0.0"
 gem "gcm"
 gem "shotgun"
 gem "sinatra"
