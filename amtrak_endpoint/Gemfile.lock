@@ -21,7 +21,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    amtrak (3.0.1)
+    amtrak (3.0.2)
       excon (~> 0.59)
     clockwork (1.2.0)
       activesupport
