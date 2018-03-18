@@ -7,6 +7,11 @@ module AmtrakEndpoint
       to = params["to"]
       date = Date.parse(params["date"]).iso8601 if params["date"]
 
+      if from.nil? || to.nil?
+        status 400
+        return ""
+      end
+
       train_route = TrainRoute.new(from: from, to: to, date: date)
       train_route.last_request = DateTime.now
 
