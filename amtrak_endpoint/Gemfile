@@ -1,0 +1,31 @@
+$LOAD_PATH << File.join(Dir.pwd, "lib")
+$LOAD_PATH << Dir.pwd
+
+source "https://rubygems.org"
+
+gem "amtrak", "~> 3.0.1"
+gem "gcm"
+gem "shotgun"
+gem "sinatra"
+gem "unicorn"
+gem "redis"
+gem "traceview"
+gem "rollbar", "~> 1.5.0"
+gem "redis-objects"
+gem "connection_pool"
+gem "resque"
+gem "rake"
+gem "clockwork"
+gem "uuidtools"
+gem "dogapi"
+gem "resque-rollbar"
+gem "activesupport"
+gem "timecop"
+
+gem "rocker", github: 'tlunter/rocker'
+
+group :development do
+  gem "pry"
+  gem "rspec"
+  gem "fakeredis", github: "guilleiguaran/fakeredis"
+end

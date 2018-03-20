@@ -6,6 +6,15 @@
         <description>Most recent changes with links to updates.</description>
         <language>en</language>
         <item>
+            <title>Version 1.8</title>
+            <sparkle:releaseNotesLink>
+                http://amtrak.tlunter.com/version/1.8.html
+            </sparkle:releaseNotesLink>
+            <pubDate>Fri, 30 Jun 2017 17:00:00 -0500</pubDate>
+            <enclosure url="https://s3.amazonaws.com/tlunter-amtrak/apps/Amtrak+Status+1.8.zip" sparkle:version="1.8" length="3666186" type="application/octet-stream" sparkle:dsaSignature="MC0CFQClNv+yMVHv7BDY19d6ozjyZ38qUQIUNO7pAtBnLja2kr3SGK1Jwkxm6fU=" />
+            <sparkle:minimumSystemVersion>10.7</sparkle:minimumSystemVersion>
+        </item>
+        <item>
             <title>Version 1.7</title>
             <sparkle:releaseNotesLink>
                 http://amtrak.tlunter.com/version/1.7.html

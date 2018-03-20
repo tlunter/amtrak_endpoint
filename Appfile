@@ -1,0 +1,98 @@
+cluster :app do |c|
+  c.cluster_instance :'tlunter.com' do |ci|
+    ci.ip = '127.0.0.1'
+    ci.remote(url: 'tcp://tlunter.com:2376')
+    ci.options = { cert_path: File.join(Dir.home, '.docker', 'tlunter.com', 'certs'), ssl_verify_peer: false }
+  end
+end
+
+load_balancer :amtrak do |lb|
+  lb.remote(host: 'tlunter.com')
+  lb.upstream = '/etc/nginx/upstream.d'
+  lb.pid_file = '/var/run/nginx.pid'
+end
+
+application :amtrak do |a|
+  a.cluster :app
+
+  a.container :redis do |c|
+    c.image = :amtrak_redis
+    c.hostname = :amtrak_redis
+    c.volumes = ['./amtrak_redis:/redis']
+    c.restart = { Name: "on-failure", MaximumRetryCount: 0 }
+  end
+
+  a.container :tracelyzer do |c|
+    c.image = :tracelyzer
+    c.hostname = :amtrak_tracelyzer
+    c.restart = { Name: "on-failure", MaximumRetryCount: 0 }
+  end
+
+  a.container :web do |c|
+    c.image = :amtrak_endpoint
+    c.hostname = :amtrak_endpoint
+    c.link :redis
+    c.link :tracelyzer
+    c.volumes_from :tracelyzer
+    c.environment = {
+      ROLLBAR_TOKEN: nil,
+      DATA_DOG_API_KEY: nil,
+    }
+    c.command = 'unicorn'
+    c.restart = { Name: "on-failure", MaximumRetryCount: 0 }
+  end
+
+  a.container :worker do |c|
+    c.image = :amtrak_endpoint
+    c.hostname = :amtrak_endpoint
+    c.link :redis
+    c.link :tracelyzer
+    c.volumes_from :tracelyzer
+    c.environment = {
+      ROLLBAR_TOKEN: nil,
+      DATA_DOG_API_KEY: nil,
+    }
+    c.command = 'resque'
+    c.restart = { Name: "on-failure", MaximumRetryCount: 0 }
+  end
+
+  a.container :clockwork do |c|
+    c.image = :amtrak_endpoint
+    c.hostname = :amtrak_endpoint
+    c.link :redis
+    c.link :tracelyzer
+    c.volumes_from :tracelyzer
+    c.environment = {
+      ROLLBAR_TOKEN: nil,
+      DATA_DOG_API_KEY: nil,
+    }
+    c.command = 'clockwork'
+    c.restart = { Name: "on-failure", MaximumRetryCount: 0 }
+  end
+
+  a.container :nginx do |c|
+    c.image = :nginx_oboe
+    c.hostname = :amtrak_nginx
+    c.link :web
+    c.link :redis
+    c.link :tracelyzer
+    c.volumes_from :tracelyzer
+    c.volumes_from :web
+    c.ports = ['8080/tcp']
+    c.environment = {
+      ROLLBAR_TOKEN: nil,
+      DATA_DOG_API_KEY: nil,
+    }
+    c.appear_in_load_balancer = true
+    c.restart = { Name: "on-failure", MaximumRetryCount: 0 }
+  end
+end
+
+deploy :amtrak do |d|
+  d.live_check = Proc.new { |host, port| ['curl','-fso','/dev/null',"#{host}:#{port}"] }
+  d.s3_location = 'tlunter-amtrak/app-deployer'
+  d.load_balancer :amtrak
+  d.application :amtrak
+end
+
+# vim: filetype=ruby

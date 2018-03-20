@@ -1,0 +1,81 @@
+redis:
+  image: amtrak_redis
+  hostname: amtrak_redis
+  volumes:
+    - "./redis:/data"
+tracelyzer:
+  image: tracelyzer
+  hostname: amtrak_tracelyzer
+web:
+  image: amtrak_endpoint
+  hostname: amtrak_endpoint
+  links:
+    - redis
+    - tracelyzer
+  volumes_from:
+    - tracelyzer
+  environment:
+    ROLLBAR_TOKEN:
+    DATA_DOG_API_KEY:
+  command: unicorn
+worker1:
+  image: amtrak_endpoint
+  hostname: amtrak_endpoint
+  links:
+    - redis
+    - tracelyzer
+  volumes_from:
+    - tracelyzer
+  environment:
+    ROLLBAR_TOKEN:
+    DATA_DOG_API_KEY:
+  command: resque
+worker2:
+  image: amtrak_endpoint
+  hostname: amtrak_endpoint
+  links:
+    - redis
+    - tracelyzer
+  volumes_from:
+    - tracelyzer
+  environment:
+    ROLLBAR_TOKEN:
+    DATA_DOG_API_KEY:
+  command: resque
+worker3:
+  image: amtrak_endpoint
+  hostname: amtrak_endpoint
+  links:
+    - redis
+    - tracelyzer
+  volumes_from:
+    - tracelyzer
+  environment:
+    ROLLBAR_TOKEN:
+    DATA_DOG_API_KEY:
+  command: resque
+clockwork:
+  image: amtrak_endpoint
+  hostname: amtrak_endpoint
+  links:
+    - redis
+    - tracelyzer
+  volumes_from:
+    - tracelyzer
+  environment:
+    ROLLBAR_TOKEN:
+    DATA_DOG_API_KEY:
+  command: clockwork
+nginx:
+  image: nginx_oboe
+  hostname: amtrak_nginx
+  links:
+    - tracelyzer
+    - web
+  volumes:
+    - "./nginx:/opt/nginx/config"
+  volumes_from:
+    - tracelyzer
+    - web
+  ports:
+    - "8080:8080"
