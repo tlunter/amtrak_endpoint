@@ -12,7 +12,6 @@ require 'clockwork'
 require 'resque'
 require 'uuidtools'
 require 'dogapi'
-require 'gcm'
 
 require 'traceview'
 
@@ -20,7 +19,6 @@ require 'amtrak_endpoint/initializers'
 
 # models
 require 'amtrak_endpoint/train_route'
-require 'amtrak_endpoint/device'
 
 # tasks
 require 'amtrak_endpoint/cache_train_times'
@@ -30,7 +28,6 @@ require 'amtrak_endpoint/worker_heartbeat'
 # controllers
 require 'amtrak_endpoint/base'
 require 'amtrak_endpoint/get_times'
-require 'amtrak_endpoint/register_device'
 
 module AmtrakEndpoint
   module_function
@@ -43,9 +40,5 @@ module AmtrakEndpoint
 
   def logger
     @logger ||= CustomLogger.new(STDOUT)
-  end
-
-  def gcm
-    @gcm ||= GCM.new(GCM_API_KEY)
   end
 end

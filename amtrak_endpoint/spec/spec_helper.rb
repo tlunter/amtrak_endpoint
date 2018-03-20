@@ -1,5 +1,6 @@
 require 'amtrak_endpoint'
 require 'fakeredis/rspec'
+require 'timecop'
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|

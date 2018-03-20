@@ -96,6 +96,7 @@ GEM
     slop (3.6.0)
     thread_safe (0.3.5)
     tilt (2.0.1)
+    timecop (0.9.1)
     traceview (3.6.0)
       json
     tzinfo (1.2.2)
@@ -130,9 +131,10 @@ DEPENDENCIES
   rspec
   shotgun
   sinatra
+  timecop
   traceview
   unicorn
   uuidtools
 
 BUNDLED WITH
-   1.12.5
+   1.16.1

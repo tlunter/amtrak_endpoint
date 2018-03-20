@@ -66,77 +66,6 @@ module AmtrakEndpoint
       cache_times[0...number].map(&train_times.method(:[]))
     end
 
-    def alert_if_late_departure
-      train_times      = get_latest_times(5)
-      times_by_number  = train_times_by_number(train_times)
-      late_trains      = find_late_train_departures(times_by_number)
-      cancelled_trains = find_cancelled_train_departures(times_by_number)
-
-      payload = { late_trains: late_trains, cancelled_trains: cancelled_trains }
-        .reject { |_, v| v.nil? || v.empty? }
-
-      unless payload.empty?
-        android_devices = devices.map(&Device.method(:new))
-          .select { |d| d.type == 'android' }
-          .map(&:uuid)
-          .tap { |i| AmtrakEndpoint.logger.debug("Alerting devices: #{i}") }
-
-        Device.android_alert(
-          android_devices,
-          from: from,
-          to: to,
-          **payload
-        )
-      end
-    end
-
-    def scheduled_versus_estimated(times)
-      estimated_time = times[:estimated_time].to_s.gsub(/[[:cntrl:]]/, '').strip
-      scheduled_time = times[:scheduled_time].to_s.gsub(/[[:cntrl:]]/, '').strip
-
-      return if estimated_time.empty? || scheduled_time.empty?
-
-      Time.parse(estimated_time) - Time.parse(scheduled_time)
-    rescue ArgumentError
-      nil
-    end
-
-    def find_late_train_departures(times_by_number)
-      depature_times(times_by_number)
-        .select do |_, departure_times|
-          departure_times.all? do |departure_time|
-            (diff = scheduled_versus_estimated(departure_time)) && diff > (5 * 60)
-          end
-        end
-        .map(&:first)
-        .tap { |t| AmtrakEndpoint.logger.debug("Late trains: #{t}") }
-    end
-
-    def find_cancelled_train_departures(times_by_number)
-      depature_times(times_by_number)
-        .select do |_, departure_times|
-          departure_times.all? do |time|
-            time[:estimated_time] =~ /cancelled/i
-          end
-        end
-        .map(&:first)
-        .tap { |t| AmtrakEndpoint.logger.debug("Cancelled trains: #{t}") }
-    end
-
-    def depature_times(times_by_number)
-      times_by_number
-        .select { |_, all_times| all_times.length > 1 }
-        .map { |number, all_times| [number, all_times.map { |t| t[:departure] }] }
-        .select { |_, departure_times| departure_times.group_by { |t| t[:date] }.length == 1 }
-    end
-
-    def train_times_by_number(train_times)
-      train_times
-        .flatten
-        .group_by { |t| t[:number] }
-        .tap { |t| AmtrakEndpoint.logger.debug("Train times by train number: #{t}") }
-    end
-
     def used?
       lr = last_request.get
       AmtrakEndpoint.logger.debug "Last Request: #{lr}"
@@ -145,14 +74,12 @@ module AmtrakEndpoint
 
     def delete
       redis.multi do |multi|
-        devices.del
         cache_times.del
         train_times.del
         last_request.del
       end
     end
 
-    set :devices
     list :cache_times, maxlength: MAX_TIMES
     hash_key :train_times, marshal: true
     value :last_request, marshal: true, default: Time.new

@@ -19,8 +19,6 @@ if ENV['RACK_ENV'] == 'production'
   ::Sinatra::Base.use Rollbar::Middleware::Sinatra
 
   DATA_DOG_API_KEY = ENV['DATA_DOG_API_KEY']
-  GCM_API_KEY = ENV['GCM_API_KEY']
 end
 
 REDIS_HOST = ENV['DOCKER'] ? 'redis' : 'localhost'
-Redis::Objects.redis = ConnectionPool.new(size: 5, timeout: 5) { Redis.new(:host => REDIS_HOST, :port => 6379) }
