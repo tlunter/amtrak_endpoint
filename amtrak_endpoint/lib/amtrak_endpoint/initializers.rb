@@ -22,3 +22,4 @@ if ENV['RACK_ENV'] == 'production'
 end
 
 REDIS_HOST = ENV['DOCKER'] ? 'redis' : 'localhost'
+Redis::Objects.redis = ConnectionPool.new(size: 5, timeout: 5) { Redis.new(:host => REDIS_HOST, :port => 6379) }
