@@ -37,6 +37,8 @@ application :amtrak do |a|
     c.environment = {
       ROLLBAR_TOKEN: nil,
       DATA_DOG_API_KEY: nil,
+      REDIS_HOST: 'redis',
+      TRACELYZER_HOST: 'tracelyzer',
     }
     c.command = 'unicorn'
     c.restart = { Name: "on-failure", MaximumRetryCount: 0 }
@@ -51,6 +53,8 @@ application :amtrak do |a|
     c.environment = {
       ROLLBAR_TOKEN: nil,
       DATA_DOG_API_KEY: nil,
+      REDIS_HOST: 'redis',
+      TRACELYZER_HOST: 'tracelyzer',
     }
     c.command = 'resque'
     c.restart = { Name: "on-failure", MaximumRetryCount: 0 }
@@ -65,6 +69,8 @@ application :amtrak do |a|
     c.environment = {
       ROLLBAR_TOKEN: nil,
       DATA_DOG_API_KEY: nil,
+      REDIS_HOST: 'redis',
+      TRACELYZER_HOST: 'tracelyzer',
     }
     c.command = 'clockwork'
     c.restart = { Name: "on-failure", MaximumRetryCount: 0 }
@@ -82,6 +88,7 @@ application :amtrak do |a|
     c.environment = {
       ROLLBAR_TOKEN: nil,
       DATA_DOG_API_KEY: nil,
+      TRACELYZER_HOST: 'tracelyzer',
     }
     c.appear_in_load_balancer = true
     c.restart = { Name: "on-failure", MaximumRetryCount: 0 }

@@ -1,5 +1,5 @@
 if ENV['RACK_ENV'] == 'production'
-  TraceView::Config[:reporter_host] = ENV['DOCKER'] ? 'tracelyzer' : 'localhost'
+  TraceView::Config[:reporter_host] = ENV['TRACELYZER_HOST']
   TraceView::Config[:tracing_mode] = 'always'
   TraceView::Config[:verbose] = true
   TraceView::Reporter.start
@@ -21,5 +21,5 @@ if ENV['RACK_ENV'] == 'production'
   DATA_DOG_API_KEY = ENV['DATA_DOG_API_KEY']
 end
 
-REDIS_HOST = ENV['DOCKER'] ? 'redis' : 'localhost'
+REDIS_HOST = ENV['REDIS_HOST']
 Redis::Objects.redis = ConnectionPool.new(size: 5, timeout: 5) { Redis.new(:host => REDIS_HOST, :port => 6379) }
